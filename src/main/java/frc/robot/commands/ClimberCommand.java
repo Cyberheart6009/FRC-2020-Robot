@@ -8,13 +8,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 
-public class ShooterCommand extends CommandBase {
-  private final ShooterSubsystem m_shooterSubsystem;
+public class ClimberCommand extends CommandBase {
+  private final ClimberSubsystem m_climberSubsystem;
 
-  public ShooterCommand(ShooterSubsystem subsystem) {
-    this.m_shooterSubsystem = subsystem;
+  public ClimberCommand(ClimberSubsystem subsystem) {
+    this.m_climberSubsystem = subsystem;
 
     addRequirements(subsystem);
   }
