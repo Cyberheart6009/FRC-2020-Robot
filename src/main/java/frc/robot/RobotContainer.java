@@ -10,7 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.DriveDistanceCommand;
+import frc.robot.commands.DriveTrain;
 import frc.robot.commands.CameraMover;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ChassisSubsystem;
@@ -29,22 +31,36 @@ public class RobotContainer {
 
   private final CameraSubsystem m_CameraSubsystem = new CameraSubsystem();
 
-  private final XboxController controller = new XboxController(0);
+  private final XboxController driver = new XboxController(0);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
 
+    // This sets the default command for the cammera subsystem
     m_CameraSubsystem.setDefaultCommand(
       new CameraMover(
         () -> {
-          return controller.getRawAxis(4) * 90 + 90;
+          return driver.getY(Hand.kRight) * 90 + 90;
         },
         () -> {
-          return controller.getRawAxis(5) * 90 + 90; 
+          return driver.getX(Hand.kLeft) * 90 + 90; 
         },
         m_CameraSubsystem
+        )
+        );
+
+    // This sets the default command for the cammera subsystem
+    m_ChassisSubsystem.setDefaultCommand(
+      new DriveTrain(
+        () -> {
+          return driver.getY(Hand.kLeft) * 90 + 90;
+        },
+        () -> {
+          return driver.getX(Hand.kLeft) * 90 + 90; 
+        },
+        m_ChassisSubsystem
         )
         );
 
