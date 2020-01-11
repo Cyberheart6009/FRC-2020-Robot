@@ -27,25 +27,27 @@ public final class Constants {
     }
     public static final class MotorConstants{
         public static final int kLeftMotorPort = 0;
-        public static final int kRightMotorPort = 1;
+        public static final int kRightMotorPort = 2;
     }
 
     public static final class EncoderConstants{
         public static final int kRightEncoderA = 0;
-        public static final int kRightEncoderB = 1;
+        public static final int kRightEncoderB = 6;
         public static final int kLeftEncoderA = 2;
-        public static final int kLeftEncoderB = 3;
-        public static final int kElevatorEncoder = 4;
+        public static final int kLeftEncoderB = 7;
+        public static final int kElevatorEncoderA = 4;
+        public static final int kElevatorEncoderB = 5;
         //placeholder value
         public static final double ENCODER_COUNTS_PER_INCH = 13.49;
     }
 
     public static final class CameraConstants{
         // placeholder values since we don't know what servo they will be plugged into yet
-        public static final int kCameraXServoRange = 69;
-        public static final int kCameraYServoRange = 420;
+        public static final int kCameraXServoRange = 1;
+        public static final int kCameraYServoRange = 3;
 
     }
+
     
   
 

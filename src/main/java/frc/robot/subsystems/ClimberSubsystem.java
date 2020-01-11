@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -28,10 +29,9 @@ public class ClimberSubsystem extends SubsystemBase {
       elevatorX = new Spark(Constants.ClimberConstants.kElevatorXMotorPort);
       elevatorY = new Spark(Constants.ClimberConstants.kElevatorYMotorPort);
       elevator = new SpeedControllerGroup(elevatorX, elevatorY);
-      elevatorEncoder = new Encoder (Constants.EncoderConstants.kElevatorEncoder);
+      elevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderA, false);
   }
 
-  @Override
   public void climb(double speed ) {
     // This method will be called once per scheduler run
     elevator.set(speed);

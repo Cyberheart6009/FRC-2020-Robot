@@ -8,6 +8,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import frc.robot.subsystems.CameraSubsystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
@@ -16,19 +18,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class JoystickCommand extends CommandBase {
+public class CameraMover extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final CameraSubsystem m_CameraSubsystem;
-  private final Joystick m_CameraJoystick;
+  private final DoubleSupplier m_xAxis;
+  private final DoubleSupplier m_yAxis;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public JoystickCommand(CameraSubsystem camera, Joystick joystick) {
+  public CameraMover(DoubleSupplier xAxis, DoubleSupplier yAxis, CameraSubsystem camera) {
     m_CameraSubsystem = camera;
-    m_CameraJoystick = joystick;
+    m_xAxis = xAxis;
+    m_yAxis = yAxis;
     
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(camera);
@@ -42,8 +46,9 @@ public class JoystickCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_CameraSubsystem.SetServos((m_CameraJoystick.getRawAxis(4)*90+90), (-m_CameraJoystick.getRawAxis(5)*90+90));
-}
+    System.out.println("Hello from command execution" + m_xAxis.getAsDouble() + " " + m_yAxis.getAsDouble());
+    m_CameraSubsystem.SetServos(m_xAxis.getAsDouble(), m_yAxis.getAsDouble());
+  }
 
   // Called once the command ends or is interrupted.
   @Override

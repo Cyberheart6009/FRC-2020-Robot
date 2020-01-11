@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class AutoDriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ChassisSubsystem m_chassisSubsystem;
-  private final CameraSubsystem m_cameraSubsystem;
   
 
   /**
@@ -30,12 +29,10 @@ public class AutoDriveCommand extends CommandBase {
 
   
    //changing variable subsystem to chassis, so that the camerasubsystem can be included as well
-  public AutoDriveCommand(ChassisSubsystem chassis, CameraSubsystem camera) {
+  public AutoDriveCommand(ChassisSubsystem chassis) {
     m_chassisSubsystem = chassis;
-    m_cameraSubsystem = camera;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(chassis);
-    addRequirements(camera);
   }
 
   // Called when the command is initially scheduled.
