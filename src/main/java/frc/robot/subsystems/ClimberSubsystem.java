@@ -28,8 +28,7 @@ public class ClimberSubsystem extends SubsystemBase {
       elevator = new SpeedControllerGroup(elevatorX, elevatorY);
   }
 
-  @Override
-  public void climb(double speed ) {
+  public void climb(double speed) {
     // This method will be called once per scheduler run
     elevator.set(speed);
   }
