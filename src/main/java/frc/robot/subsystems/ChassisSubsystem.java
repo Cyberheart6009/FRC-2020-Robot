@@ -33,6 +33,9 @@ public class ChassisSubsystem extends SubsystemBase {
 
   private final DifferentialDrive driveBase;
 
+  //public double k_speed;
+  //public double k_angle;
+
   /**
    * Creates a new ExampleSubsystem.
    */ 
@@ -54,6 +57,8 @@ public class ChassisSubsystem extends SubsystemBase {
   }
 
   public void drive(double speed, double angle) {
+    //k_speed = speed;
+    //k_angle = angle;
     driveBase.arcadeDrive(speed, angle);
   }
 

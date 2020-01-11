@@ -10,6 +10,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
 /**
  * An example command that uses an example subsystem.
@@ -17,14 +18,22 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class DriveDistanceCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ChassisSubsystem m_chassisSubsystem;
+  private double m_distance; 
+
+  private double m_speed; 
+  private double m_angle; 
+
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveDistanceCommand(ChassisSubsystem subsystem) {
+  public DriveDistanceCommand(ChassisSubsystem subsystem, double distance, double speed, double angle) {
     m_chassisSubsystem = subsystem;
+    m_distance = distance;
+    m_speed = speed;
+    m_angle = angle;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -37,7 +46,9 @@ public class DriveDistanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_chassisSubsystem.drive(0.5, -30);
+    while (m_chassisSubsystem.getDistance() != m_distance){
+        m_chassisSubsystem.drive(m_speed, m_angle);
+    }    
   }
 
   // Called once the command ends or is interrupted.
