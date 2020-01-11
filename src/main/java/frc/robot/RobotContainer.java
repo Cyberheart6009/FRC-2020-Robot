@@ -27,8 +27,6 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final Joystick driver, operator;
-
 
 
   /**
@@ -46,8 +44,6 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    JoystickButton placeholdername = new JoystickButton(joystick, buttonNumber);
-      placeholdername.whenPressed(() -> System.out.println());
   }
 
 
