@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.CameraMover;
+import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -27,6 +29,8 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  private final CameraSubsystem m_CameraSubsystem = new CameraSubsystem();
+
   private final XboxController controller = new XboxController(0);
 
 
@@ -36,6 +40,20 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    m_CameraSubsystem.setDefaultCommand(
+      new CameraMover(
+        () -> {
+          return controller.getRawAxis(4) * 90 + 90;
+        },
+        () -> {
+          return controller.getRawAxis(5) * 90 + 90; 
+        },
+        m_CameraSubsystem
+        )
+        );
+
+
     // Configure the button bindings
     configureButtonBindings();
   }
