@@ -1,0 +1,112 @@
+#!/usr/bin/python
+import cv2
+from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+import time
+import threading
+from grip import *
+from post_to_netowrktable import *
+
+myIP = "raspberrypi.local"
+
+capture=None
+
+print('Creating pipeline')
+pipeline = GripPipeline()
+
+
+print('Creating video capture')
+cap = cv2.VideoCapture(0)
+
+print('Establishing Newtork Tables')
+networkTables = NetworkTablePush()
+
+w = int(cap.get(3))
+h = int(cap.get(4))
+
+trimW = 0 # int(w * 0.2)
+print('W' + str(w))
+print("trimW "+str(trimW))
+print("w-trimW" + str(w-trimW))
+
+def xSend():
+	while True:
+		have_frame, yframe = cap.read()
+		if have_frame:
+			pipeline.process(yframe)
+			cntr = pipeline.find_contours_output
+			if len(cntr):
+				temp = []
+				prev_time = time.clock()
+				for i in cntr:
+					for j in i:
+						for k in j:
+							temp.append(k[0])
+				avg = numpy.average(temp)
+				print ("Processing Time: %.2f ms" % ((time.clock() - prev_time)*1000))
+				#print (cntr, "\n")
+				#print (cntr[0], "\n")
+				#print (cntr[0][0][0][0], cntr[0][0][0][1])
+				#print (temp)
+				print ("%.2f" %(avg))
+				networkTables.extra_processing(avg)
+
+
+xSend()
+
+#thread = threading.Thread(target=xSend, args=())
+#thread.daemon = True                            # Daemonize thread
+#thread.start()                                  # Start the execution
+
+class CamHandler(BaseHTTPRequestHandler):
+	def do_GET(self):
+		print (self.path)
+		if self.path.endswith('.mjpg'):
+			self.send_response(200)
+			self.send_header('Content-type','multipart/x-mixed-replace; boundary=--jpgboundary')
+			self.end_headers()
+			while True:
+				try:
+					if True:
+						capture = cap
+						rc,img = cap.read()
+						if not rc:
+							continue
+					else:
+						img = pipeline.getThreshold(cap)
+					#imgRGB = cv2.cvtColor(img,cv2.COLOR_BGR2RGB)
+					r, buf = cv2.imencode(".jpg",img[0:int(h),trimW:(w-trimW)]) ## [yMin:yMax,xMin:xMax]
+					self.wfile.write("--jpgboundary\r\n")
+					self.send_header('Content-type','image/jpeg')
+					self.send_header('Content-length',str(len(buf)))
+					self.end_headers()
+					self.wfile.write(bytearray(buf))
+					self.wfile.write('\r\n')
+					time.sleep(0.08)
+				except KeyboardInterrupt:
+					break
+			return
+		if self.path.endswith('.html') or self.path=="/":
+			self.send_response(200)
+			self.send_header('Content-type','text/html')
+			self.end_headers()
+			self.wfile.write('<html><head></head><body>')
+			self.wfile.write('<h1>Camera Stream</h1>')
+			self.wfile.write('<img src="/cam.mjpg"/>')
+			self.wfile.write('</body></html>')
+			return
+
+def main():
+	#global capture
+	#capture = cv2.VideoCapture(0)
+	"""capture.set(cv2.CAP_PROP_FRAME_WIDTH, 320); 
+	capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 240);"""
+	try:
+		server = HTTPServer((myIP,5802),CamHandler)
+		print ("server started")
+		server.serve_forever()
+	except KeyboardInterrupt:
+		#capture.release()
+		server.socket.close()
+
+if __name__ == '__main__':
+	main()
