@@ -7,13 +7,18 @@
 
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import java.util.ArrayList;
 
 public class ChassisSubsystem extends SubsystemBase {
 
@@ -23,6 +28,8 @@ public class ChassisSubsystem extends SubsystemBase {
   
   private final Encoder rightEncoder;
   private final Encoder leftEncoder;
+
+  AHRS gyro = new AHRS(SerialPort.Port.kMXP);
 
   private final DifferentialDrive driveBase;
 
@@ -42,14 +49,41 @@ public class ChassisSubsystem extends SubsystemBase {
     
     leftEncoder = new Encoder(Constants.EncoderConstants.kLeftEncoderA, Constants.EncoderConstants.kLeftEncoderB, true);
     rightEncoder = new Encoder(Constants.EncoderConstants.kRightEncoderA, Constants.EncoderConstants.kRightEncoderB, false);
+    
+    gyro = new AHRS(SerialPort.Port.kMXP);
   }
 
   public void drive(double speed, double angle) {
     driveBase.arcadeDrive(speed, angle);
   }
 
+  public double GetGyroAngle(){
+    return gyro.getYaw();
+  }
+  
+  
+  public void GyroReset(){
+    gyro.reset();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public double getDistance(){
+    return ((double) (leftEncoder.get() + rightEncoder.get()) / (Constants.EncoderConstants.ENCODER_COUNTS_PER_INCH * 2));
+  }
+
+  public void resetEncoders() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+
+  public ArrayList<Integer> getValue() {
+    ArrayList<Integer> encoderDistances = new ArrayList<Integer>();
+    encoderDistances.add(leftEncoder.get());
+    encoderDistances.add(rightEncoder.get());
+    return encoderDistances;
   }
 }
