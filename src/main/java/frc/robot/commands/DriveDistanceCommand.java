@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 /**
  * An example command that uses an example subsystem.
  */
-public class AutoDriveCommand extends CommandBase {
+public class DriveDistanceCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ChassisSubsystem m_chassisSubsystem;
 
@@ -23,7 +23,7 @@ public class AutoDriveCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public AutoDriveCommand(ChassisSubsystem subsystem) {
+  public DriveDistanceCommand(ChassisSubsystem subsystem) {
     m_chassisSubsystem = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
