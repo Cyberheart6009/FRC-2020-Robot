@@ -7,11 +7,8 @@
 
 package frc.robot;
 
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
 
->>>>>>> 162b171011a713fe3941c989ecf7f4794de0e1af
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -21,8 +18,6 @@ import java.util.ArrayList;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-<<<<<<< HEAD
-=======
     public static final class ClimberConstants {
         public static final int kElevatorXMotorPort = 5;
         public static final int kElevatorYMotorPort = 6;
@@ -45,5 +40,4 @@ public final class Constants {
   
 
 
->>>>>>> 162b171011a713fe3941c989ecf7f4794de0e1af
 }

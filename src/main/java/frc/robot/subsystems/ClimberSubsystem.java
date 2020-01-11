@@ -29,7 +29,8 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
+  public void climb(double speed ) {
     // This method will be called once per scheduler run
+    elevator.set(speed);
   }
 }
