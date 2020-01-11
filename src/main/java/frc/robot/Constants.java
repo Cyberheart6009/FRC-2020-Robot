@@ -36,6 +36,13 @@ public final class Constants {
         public static final int kLeftEncoderA = 2;
         public static final int kLeftEncoderB = 3;
     }
+
+    public static final class CameraConstants{
+        // 69 is a placeholder number since we don't know what port it will be plugged into yet.
+        public static final int kCameraXServoRange = 69;
+        public static final int kCameraYServoRange = 420;
+
+    }
     
   
 

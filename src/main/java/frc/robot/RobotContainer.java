@@ -27,6 +27,9 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  private final XboxController controller = new XboxController(0);
+
+
 
 
   /**
@@ -44,7 +47,9 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    Joystick cameraJoystick = new Joystick(1);
   }
+
 
 
   /**
