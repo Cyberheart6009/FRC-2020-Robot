@@ -20,5 +20,8 @@ public final class Constants {
         public static final int kElevatorXMotorPort = 5;
         public static final int kElevatorYMotorPort = 6;
     }
+    public static final class ShooterConstants {
+        public static final int kShooterMotorPort = 7;
+    }
 
 }
