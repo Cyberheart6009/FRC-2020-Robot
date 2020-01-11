@@ -21,11 +21,13 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SpeedController elevatorX;
   private final SpeedController elevatorY;
   private final SpeedController elevator;
+  private final Encoder elevatorEncoder;
 
   public ClimberSubsystem() {
       elevatorX = new Spark(Constants.ClimberConstants.kElevatorXMotorPort);
       elevatorY = new Spark(Constants.ClimberConstants.kElevatorYMotorPort);
       elevator = new SpeedControllerGroup(elevatorX, elevatorY);
+      elevatorEncoder = new Encoder (Constants.EncoderConstants.kElevatorEncoder);
   }
 
   public void climb(double speed ) {
@@ -33,3 +35,4 @@ public class ClimberSubsystem extends SubsystemBase {
     elevator.set(speed);
   }
 }
+ 

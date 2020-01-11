@@ -7,19 +7,18 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
+import java.util.ArrayList;
 
 public class ChassisSubsystem extends SubsystemBase {
 
@@ -70,5 +69,21 @@ public class ChassisSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  public double getDistance(){
+    return ((double) (leftEncoder.get() + rightEncoder.get()) / (Constants.EncoderConstants.ENCODER_COUNTS_PER_INCH * 2));
+  }
+
+  public void resetEncoders() {
+    leftEncoder.reset();
+    rightEncoder.reset();
+  }
+
+  public ArrayList<Integer> getValue() {
+    ArrayList<Integer> encoderDistances = new ArrayList<Integer>();
+    encoderDistances.add(leftEncoder.get());
+    encoderDistances.add(rightEncoder.get());
+    return encoderDistances;
   }
 }
