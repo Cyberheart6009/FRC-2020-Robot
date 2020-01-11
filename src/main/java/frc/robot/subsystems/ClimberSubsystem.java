@@ -29,7 +29,7 @@ public class ClimberSubsystem extends SubsystemBase {
       elevatorX = new Spark(Constants.ClimberConstants.kElevatorXMotorPort);
       elevatorY = new Spark(Constants.ClimberConstants.kElevatorYMotorPort);
       elevator = new SpeedControllerGroup(elevatorX, elevatorY);
-      elevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoder);
+      elevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderA, false);
   }
 
   public void climb(double speed ) {

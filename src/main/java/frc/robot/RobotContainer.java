@@ -29,16 +29,14 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
-  private final ChassisSubsystem m_chassisSubsystem = new ChassisSubsystem();
-  private final Auto m_autoCommand = new Auto(m_chassisSubsystem);
+  private final ExampleCommand m_exampleCommand = new ExampleCommand(m_exampleSubsystem);
+  //private final ChassisSubsystem m_chassisSubsystem = new ChassisSubsystem();
+  //private final Auto m_autoCommand = new Auto(m_chassisSubsystem);
 
 
   private final CameraSubsystem m_CameraSubsystem = new CameraSubsystem();
 
   private final XboxController controller = new XboxController(0);
-
-
-
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -57,7 +55,6 @@ public class RobotContainer {
         )
         );
 
-
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -69,7 +66,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Joystick cameraJoystick = new Joystick(1);
+    //Joystick cameraJoystick = new Joystick(1);
   }
 
 
@@ -81,6 +78,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return m_exampleCommand;
   }
 }

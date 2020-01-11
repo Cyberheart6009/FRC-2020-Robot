@@ -46,6 +46,7 @@ public class CameraMover extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Hello from command execution" + m_xAxis.getAsDouble() + " " + m_yAxis.getAsDouble());
     m_CameraSubsystem.SetServos(m_xAxis.getAsDouble(), m_yAxis.getAsDouble());
   }
 

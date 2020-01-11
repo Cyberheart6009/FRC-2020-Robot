@@ -15,8 +15,6 @@ import frc.robot.Constants;
 public class CameraSubsystem extends SubsystemBase {
   private final Servo cameraX;
   private final Servo cameraY;
-  
-
 
   public CameraSubsystem() {
       cameraX = new Servo(Constants.CameraConstants.kCameraXServoRange);
