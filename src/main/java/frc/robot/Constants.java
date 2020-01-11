@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -23,5 +25,19 @@ public final class Constants {
     public static final class ShooterConstants {
         public static final int kShooterMotorPort = 7;
     }
+    public static final class MotorConstants{
+        public static final int kLeftMotorPort = 0;
+        public static final int kRightMotorPort = 1;
+    }
+
+    public static final class EncoderConstants{
+        public static final int kRightEncoderA = 0;
+        public static final int kRightEncoderB = 1;
+        public static final int kLeftEncoderA = 2;
+        public static final int kLeftEncoderB = 3;
+    }
+    
+  
+
 
 }
