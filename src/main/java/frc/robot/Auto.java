@@ -15,18 +15,16 @@ public class Auto extends SequentialCommandGroup {
    * @param drive The drive subsystem this command will run on
    * @param hatch The hatch subsystem this command will run on
    */
-  public Auto(ChassisSubsystem drive) {
+  public ChassisSubsystem m_subsystem;
+  public Auto(ChassisSubsystem subsystem) {
+      m_subsystem = subsystem;
     addCommands(
         // Drive forward the specified distance
-        new DriveDistance(AutoConstants.kAutoDriveDistanceInches, AutoConstants.kAutoDriveSpeed,
-                          drive),
-
-        // Release the hatch
-        new ReleaseHatch(hatch),
-
-        // Drive backward the specified distance
-        new DriveDistance(AutoConstants.kAutoBackupDistanceInches, -AutoConstants.kAutoDriveSpeed,
-                          drive));
+        new DriveDistanceCommand(m_subsystem, 5, 5,5)
+        //... more commands for auto
+        
+        
+        );
   }
 
 }
