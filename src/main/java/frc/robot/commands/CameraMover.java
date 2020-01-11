@@ -11,8 +11,6 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import frc.robot.subsystems.CameraSubsystem;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**

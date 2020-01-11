@@ -41,8 +41,8 @@ public class ChassisSubsystem extends SubsystemBase {
    */ 
 
   public ChassisSubsystem() {
-    leftMotor = new Spark(Constants.MotorConstants.kLeftMotorPort);
-    rightMotor = new Spark(Constants.MotorConstants.kRightMotorPort);  
+    leftMotor = new Spark(Constants.PWMConstants.kLeftMotorPort);
+    rightMotor = new Spark(Constants.PWMConstants.kRightMotorPort);  
     rightMotor.setInverted(true);
     motors = new SpeedControllerGroup(rightMotor, leftMotor);
 
