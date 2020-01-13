@@ -22,9 +22,8 @@ import java.util.ArrayList;
 
 public class ChassisSubsystem extends SubsystemBase {
 
-  private final SpeedController rightMotor;
-  private final SpeedController leftMotor;
-  private final SpeedControllerGroup motors;
+  private final SpeedController rightBackMotor, leftFrontMotor,leftBackMotor, rightFrontMotor;
+  private final SpeedControllerGroup leftMotors, rightMotors;
   
   private final Encoder rightEncoder;
   private final Encoder leftEncoder;
@@ -41,12 +40,16 @@ public class ChassisSubsystem extends SubsystemBase {
    */ 
 
   public ChassisSubsystem() {
-    leftMotor = new Spark(Constants.PWMConstants.kLeftMotorPort);
-    rightMotor = new Spark(Constants.PWMConstants.kRightMotorPort);  
-    rightMotor.setInverted(true);
-    motors = new SpeedControllerGroup(rightMotor, leftMotor);
+    leftFrontMotor = new Spark(0);
+    leftBackMotor = new Spark(1);
+    rightFrontMotor = new Spark(2);
+    rightBackMotor = new Spark(3);
 
-    driveBase = new DifferentialDrive(leftMotor, rightMotor);
+    leftMotors = new SpeedControllerGroup(leftFrontMotor, leftBackMotor);
+    rightMotors = new SpeedControllerGroup(rightFrontMotor, rightBackMotor);
+
+    rightMotors.setInverted(true);
+    driveBase = new DifferentialDrive(leftMotors, rightMotors);
     driveBase.setRightSideInverted(false);
 
     

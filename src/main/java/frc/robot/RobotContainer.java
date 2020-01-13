@@ -16,6 +16,7 @@ import frc.robot.commands.DriveTrain;
 import frc.robot.commands.CameraMover;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.SingleMotorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -29,7 +30,9 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ChassisSubsystem m_ChassisSubsystem = new ChassisSubsystem();
 
-  private final CameraSubsystem m_CameraSubsystem = new CameraSubsystem();
+  //private final CameraSubsystem m_CameraSubsystem = new CameraSubsystem();
+
+  private final SingleMotorSubsystem m_MotorSubsystem = new SingleMotorSubsystem();
 
   private final XboxController driver = new XboxController(0);
 
@@ -37,7 +40,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-
+    /*
     // This sets the default command for the cammera subsystem
     m_CameraSubsystem.setDefaultCommand(
       new CameraMover(
@@ -50,15 +53,16 @@ public class RobotContainer {
         m_CameraSubsystem
         )
         );
+        */
 
     // This sets the default command for the cammera subsystem
     m_ChassisSubsystem.setDefaultCommand(
       new DriveTrain(
         () -> {
-          return driver.getY(Hand.kLeft) * 90 + 90;
+          return driver.getY(Hand.kLeft);
         },
         () -> {
-          return driver.getX(Hand.kLeft) * 90 + 90; 
+          return driver.getX(Hand.kLeft); 
         },
         m_ChassisSubsystem
         )
@@ -75,7 +79,12 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //Joystick cameraJoystick = new Joystick(1);
+    new JoystickButton(driver, 1)
+      .whenPressed(() -> m_MotorSubsystem.fullBackward())
+      .whenReleased(() -> m_MotorSubsystem.fullStop());
+    new JoystickButton(driver, 2)
+      .whenPressed(() -> m_MotorSubsystem.fullForward())
+      .whenReleased(() -> m_MotorSubsystem.fullStop());
   }
 
 

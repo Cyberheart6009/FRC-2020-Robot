@@ -18,9 +18,9 @@ package frc.robot;
 public final class Constants {
     public static final class PWMConstants{
         public static final int kLeftMotorPort = 0;
-        public static final int kCameraXServoRange = 1;
+        public static final int kCameraXServoRange = 8;
         public static final int kRightMotorPort = 2;
-        public static final int kCameraYServoRange = 3;
+        public static final int kCameraYServoRange = 9;
         public static final int kclimberXMotorPort = 5;
         public static final int kclimberYMotorPort = 6;
         public static final int kShooterMotorPort = 7;
@@ -36,4 +36,6 @@ public final class Constants {
         //placeholder value
         public static final double ENCODER_COUNTS_PER_INCH = 13.49;
     }
+
+
 }
