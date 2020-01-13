@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import cv2
-from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+# Was BaseHTTPServer in python 2.7
+from http.server import BaseHTTPRequestHandler,HTTPServer
 import time
 from grip import *
 
@@ -18,7 +19,7 @@ class CamHandler(BaseHTTPRequestHandler):
 				try:
 					if True:
 						capture = cap
-						rc,img = cap.read()
+						rc,img = cap.read()  
 						if not rc:
 							continue
 					else:
@@ -51,7 +52,7 @@ def main():
 	"""capture.set(cv2.CAP_PROP_FRAME_WIDTH, 320); 
 	capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 240);"""
 	try:
-		server = HTTPServer(('10.16.148.225',9090),CamHandler)
+		server = HTTPServer(('127.0.0.1',9090),CamHandler)
 		print ("server started")
 		server.serve_forever()
 	except KeyboardInterrupt:
