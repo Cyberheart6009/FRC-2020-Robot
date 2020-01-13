@@ -1,7 +1,8 @@
 import cv2
-import numpy
+import numpy as np
 import math
-from enum import Enum
+import enum as Enum
+from networktables import NetworkTables
 
 class GripPipeline:
     """
@@ -103,3 +104,26 @@ class GripPipeline:
 
 BlurType = Enum('BlurType', 'Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter')
 
+
+
+cap = cv2.VideoCapture(0)
+cap.set(3, 640)
+cap.set(4, 480)
+#cap.set(15, -11)
+#exposure_low = True
+
+font= cv2.FONT_HERSHEY_SIMPLEX
+
+# Distances in inches
+ballDiameter = 7
+
+imageWidth = 640.0
+imageCenter = imageWidth/2
+# FIXME recalculate minArea = 200
+
+while True:
+    ret, frame = cap.read()
+
+    cv2.imshow("Filtering", mask)   
+
+    k = cv2.waitKey(1)
