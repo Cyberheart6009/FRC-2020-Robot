@@ -1,8 +1,7 @@
 import cv2
-import numpy as np
+import numpy
 import math
-import enum as Enum
-from networktables import NetworkTables
+from enum import Enum
 
 class GripPipeline:
     """
@@ -25,10 +24,12 @@ class GripPipeline:
 
         self.hsv_threshold_output = None
 
-        self.__find_contours_input = self.hsv_threshold_output
-        self.__find_contours_external_only = False
+        self.__find_blobs_input = self.hsv_threshold_output
+        self.__find_blobs_min_area = 0.0
+        self.__find_blobs_circularity = [0.31654675658658255, 1.0]
+        self.__find_blobs_dark_blobs = False
 
-        self.find_contours_output = None
+        self.find_blobs_output = None
 
 
     def process(self, source0):
@@ -43,9 +44,9 @@ class GripPipeline:
         self.__hsv_threshold_input = self.blur_output
         (self.hsv_threshold_output) = self.__hsv_threshold(self.__hsv_threshold_input, self.__hsv_threshold_hue, self.__hsv_threshold_saturation, self.__hsv_threshold_value)
 
-        # Step Find_Contours0:
-        self.__find_contours_input = self.hsv_threshold_output
-        (self.find_contours_output) = self.__find_contours(self.__find_contours_input, self.__find_contours_external_only)
+        # Step Find_Blobs0:
+        self.__find_blobs_input = self.hsv_threshold_output
+        (self.find_blobs_output) = self.__find_blobs(self.__find_blobs_input, self.__find_blobs_min_area, self.__find_blobs_circularity, self.__find_blobs_dark_blobs)
 
 
     @staticmethod
@@ -85,26 +86,36 @@ class GripPipeline:
         return cv2.inRange(out, (hue[0], sat[0], val[0]),  (hue[1], sat[1], val[1]))
 
     @staticmethod
-    def __find_contours(input, external_only):
-        """Sets the values of pixels in a binary image to their distance to the nearest black pixel.
+    def __find_blobs(input, min_area, circularity, dark_blobs):
+        """Detects groups of pixels in an image.
         Args:
             input: A numpy.ndarray.
-            external_only: A boolean. If true only external contours are found.
-        Return:
-            A list of numpy.ndarray where each one represents a contour.
+            min_area: The minimum blob size to be found.
+            circularity: The min and max circularity as a list of two numbers.
+            dark_blobs: A boolean. If true looks for black. Otherwise it looks for white.
+        Returns:
+            A list of KeyPoint.
         """
-        if(external_only):
-            mode = cv2.RETR_EXTERNAL
-        else:
-            mode = cv2.RETR_LIST
-        method = cv2.CHAIN_APPROX_SIMPLE
-        im2, contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
-        return contours
+        params = cv2.SimpleBlobDetector_Params()
+        params.filterByColor = 1
+        params.blobColor = (0 if dark_blobs else 255)
+        params.minThreshold = 10
+        params.maxThreshold = 220
+        params.filterByArea = True
+        params.minArea = min_area
+        params.filterByCircularity = True
+        params.minCircularity = circularity[0]
+        params.maxCircularity = circularity[1]
+        params.filterByConvexity = False
+        params.filterByInertia = False
+        detector = cv2.SimpleBlobDetector_create(params)
+        return detector.detect(input)
 
 
 BlurType = Enum('BlurType', 'Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter')
 
 
+pipeline = GripPipeline()
 
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)
@@ -123,7 +134,21 @@ imageCenter = imageWidth/2
 
 while True:
     ret, frame = cap.read()
+    
+    pipeline.process(frame)
+    
+    blobs = pipeline.find_blobs_output
 
-    cv2.imshow("Filtering", mask)   
+    print(blobs)
+
+    cv2.imshow("Filtering", frame)
 
     k = cv2.waitKey(1)
+    if  k == 27:
+        break  # esc to quit
+    elif k == 13:
+        if exposure_low:
+            cap.set(cv2.CAP_PROP_EXPOSURE, -6)
+        else:
+            cap.set(cv2.CAP_PROP_EXPOSURE, -11)
+        exposure_low = not exposure_low
