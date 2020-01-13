@@ -24,6 +24,11 @@ class GripPipeline:
 
         self.hsv_threshold_output = None
 
+        self.__find_contours_input = self.hsv_threshold_output
+        self.__find_contours_external_only = False
+
+        self.find_contours_output = None
+
 
     def process(self, source0):
         """
@@ -36,6 +41,10 @@ class GripPipeline:
         # Step HSV_Threshold0:
         self.__hsv_threshold_input = self.blur_output
         (self.hsv_threshold_output) = self.__hsv_threshold(self.__hsv_threshold_input, self.__hsv_threshold_hue, self.__hsv_threshold_saturation, self.__hsv_threshold_value)
+
+        # Step Find_Contours0:
+        self.__find_contours_input = self.hsv_threshold_output
+        (self.find_contours_output) = self.__find_contours(self.__find_contours_input, self.__find_contours_external_only)
 
 
     @staticmethod
@@ -73,6 +82,23 @@ class GripPipeline:
         """
         out = cv2.cvtColor(input, cv2.COLOR_BGR2HSV)
         return cv2.inRange(out, (hue[0], sat[0], val[0]),  (hue[1], sat[1], val[1]))
+
+    @staticmethod
+    def __find_contours(input, external_only):
+        """Sets the values of pixels in a binary image to their distance to the nearest black pixel.
+        Args:
+            input: A numpy.ndarray.
+            external_only: A boolean. If true only external contours are found.
+        Return:
+            A list of numpy.ndarray where each one represents a contour.
+        """
+        if(external_only):
+            mode = cv2.RETR_EXTERNAL
+        else:
+            mode = cv2.RETR_LIST
+        method = cv2.CHAIN_APPROX_SIMPLE
+        im2, contours, hierarchy =cv2.findContours(input, mode=mode, method=method)
+        return contours
 
 
 BlurType = Enum('BlurType', 'Box_Blur Gaussian_Blur Median_Filter Bilateral_Filter')
