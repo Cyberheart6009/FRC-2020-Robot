@@ -17,10 +17,17 @@ package frc.robot;
  */
 public final class Constants {
     public static final class PWMConstants{
-        public static final int kLeftMotorPort = 0;
-        public static final int kCameraXServoRange = 8;
-        public static final int kRightMotorPort = 2;
-        public static final int kCameraYServoRange = 9;
+        
+        //all 0 because i do not know the correct motor ports.
+        public static final Integer kLeftBackMotorPort = 0;
+        public static final Integer kLeftFrontMotorPort = 0;
+        public static final Integer kRightBackMotorPort = 0;
+        public static final Integer kRIghtFrontMotorPort = 0;
+
+
+        public static final int kCameraXServoRange = 1;
+        //public static final int kRightMotorPort = 2;
+        public static final int kCameraYServoRange = 3;
         public static final int kclimberXMotorPort = 5;
         public static final int kclimberYMotorPort = 6;
         public static final int kShooterMotorPort = 7;
@@ -35,7 +42,30 @@ public final class Constants {
         public static final int kclimberEncoderB = 5;
         //placeholder value
         public static final double ENCODER_COUNTS_PER_INCH = 13.49;
+        
+        //placeholder values for PIDTurn
+        public static final boolean kGyroReversed = false;
+        public static final double kTurnToleranceDeg = 5;
+        public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
     }
 
+    public static final class TurnConstants{
+        //placeholder values
+        public static final double kTurnP = 0;
+        public static final double kTurnI = 0;
+        public static final double kTurnD = 0;
+    }
 
+    public static final class XboxConstants{
+        public static final int kAButton = 1;
+        public static final int kBButton = 2;
+        public static final int kXButton = 3;
+        public static final int kYButton = 4;
+        public static final int kLBumper = 5;
+        public static final int kYBumper = 6;
+        public static final int kSelect = 7;
+        public static final int kStart = 8;
+        public static final int kLeftThumbPush = 9;
+        public static final int kRightThumbPush = 10;
+    }
 }

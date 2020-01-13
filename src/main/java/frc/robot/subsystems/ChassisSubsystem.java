@@ -41,16 +41,25 @@ public class ChassisSubsystem extends SubsystemBase {
 
   public ChassisSubsystem() {
     leftFrontMotor = new Spark(0);
-    leftBackMotor = new Spark(1);
     rightFrontMotor = new Spark(2);
+    leftBackMotor = new Spark(1);
     rightBackMotor = new Spark(3);
 
     leftMotors = new SpeedControllerGroup(leftFrontMotor, leftBackMotor);
     rightMotors = new SpeedControllerGroup(rightFrontMotor, rightBackMotor);
 
-    rightMotors.setInverted(true);
-    driveBase = new DifferentialDrive(leftMotors, rightMotors);
-    driveBase.setRightSideInverted(false);
+    
+    if (Constants.PWMConstants.kLeftBackMotorPort != null || Constants.PWMConstants.kRightBackMotorPort != null) {
+      rightMotors.setInverted(true);
+      driveBase = new DifferentialDrive(leftMotors, rightMotors);
+      driveBase.setRightSideInverted(false);
+    } else {
+      rightFrontMotor.setInverted(true);
+      driveBase = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
+      driveBase.setRightSideInverted(false);
+    }
+    
+
 
     
     leftEncoder = new Encoder(Constants.EncoderConstants.kLeftEncoderA, Constants.EncoderConstants.kLeftEncoderB, true);
