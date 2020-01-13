@@ -7,10 +7,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Encoder;
 import frc.robot.Constants;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -18,21 +20,25 @@ public class ClimberSubsystem extends SubsystemBase {
    * Creates a new subsystem.
    */
 
-  private final SpeedController elevatorX;
-  private final SpeedController elevatorY;
-  private final SpeedController elevator;
-  private final Encoder elevatorEncoder;
+  private final SpeedController climberX;
+  private final SpeedController climberY;
+  private final SpeedController climber;
+  private final Encoder climberEncoder;
 
   public ClimberSubsystem() {
-      elevatorX = new Spark(Constants.ClimberConstants.kElevatorXMotorPort);
-      elevatorY = new Spark(Constants.ClimberConstants.kElevatorYMotorPort);
-      elevator = new SpeedControllerGroup(elevatorX, elevatorY);
-      elevatorEncoder = new Encoder (Constants.EncoderConstants.kElevatorEncoder);
+      climberX = new Spark(Constants.PWMConstants.kclimberXMotorPort);
+      climberY = new Spark(Constants.PWMConstants.kclimberYMotorPort);
+      climber = new SpeedControllerGroup(climberX, climberY);
+      climberEncoder = new Encoder(Constants.EncoderConstants.kclimberEncoderA, Constants.EncoderConstants.kclimberEncoderA, false);
   }
 
-  public void climb(double speed ) {
+  public void Climb(double speed ) {
     // This method will be called once per scheduler run
-    elevator.set(speed);
+    climber.set(speed);
+  }
+
+  public double GetRawEncoder() {
+    return climberEncoder.getDistance();
   }
 }
  

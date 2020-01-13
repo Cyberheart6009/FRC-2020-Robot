@@ -7,10 +7,8 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ChassisSubsystem;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.RobotContainer;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -19,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class AutoDriveCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ChassisSubsystem m_chassisSubsystem;
-  private final CameraSubsystem m_cameraSubsystem;
   
 
   /**
@@ -30,12 +27,10 @@ public class AutoDriveCommand extends CommandBase {
 
   
    //changing variable subsystem to chassis, so that the camerasubsystem can be included as well
-  public AutoDriveCommand(ChassisSubsystem chassis, CameraSubsystem camera) {
+  public AutoDriveCommand(ChassisSubsystem chassis) {
     m_chassisSubsystem = chassis;
-    m_cameraSubsystem = camera;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(chassis);
-    addRequirements(camera);
   }
 
   // Called when the command is initially scheduled.
@@ -46,7 +41,7 @@ public class AutoDriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //m_chassisSubsystem.drive(speed, angle);
+    m_chassisSubsystem.drive(0.5, -30);
   }
 
   // Called once the command ends or is interrupted.

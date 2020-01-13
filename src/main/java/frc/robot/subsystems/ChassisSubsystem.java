@@ -33,13 +33,16 @@ public class ChassisSubsystem extends SubsystemBase {
 
   private final DifferentialDrive driveBase;
 
+  //public double k_speed;
+  //public double k_angle;
+
   /**
    * Creates a new ExampleSubsystem.
    */ 
 
   public ChassisSubsystem() {
-    leftMotor = new Spark(Constants.MotorConstants.kLeftMotorPort);
-    rightMotor = new Spark(Constants.MotorConstants.kRightMotorPort);  
+    leftMotor = new Spark(Constants.PWMConstants.kLeftMotorPort);
+    rightMotor = new Spark(Constants.PWMConstants.kRightMotorPort);  
     rightMotor.setInverted(true);
     motors = new SpeedControllerGroup(rightMotor, leftMotor);
 
@@ -54,6 +57,8 @@ public class ChassisSubsystem extends SubsystemBase {
   }
 
   public void drive(double speed, double angle) {
+    //k_speed = speed;
+    //k_angle = angle;
     driveBase.arcadeDrive(speed, angle);
   }
 
@@ -68,7 +73,7 @@ public class ChassisSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+   // This method will be called once per scheduler run
   }
 
   public double getDistance(){

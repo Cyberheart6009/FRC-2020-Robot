@@ -5,27 +5,35 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
+import java.util.function.DoubleSupplier;
+
+import frc.robot.subsystems.CameraSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
  * An example command that uses an example subsystem.
  */
-public class ExampleCommand extends CommandBase {
+public class CameraMover extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ExampleSubsystem m_subsystem;
+  private final CameraSubsystem m_CameraSubsystem;
+  private final DoubleSupplier m_xAxis;
+  private final DoubleSupplier m_yAxis;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ExampleCommand(ExampleSubsystem subsystem) {
-    m_subsystem = subsystem;
+  public CameraMover(DoubleSupplier xAxis, DoubleSupplier yAxis, CameraSubsystem camera) {
+    m_CameraSubsystem = camera;
+    m_xAxis = xAxis;
+    m_yAxis = yAxis;
+    
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(subsystem);
+    addRequirements(camera);
   }
 
   // Called when the command is initially scheduled.
@@ -36,6 +44,8 @@ public class ExampleCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    System.out.println("Hello from command execution" + m_xAxis.getAsDouble() + " " + m_yAxis.getAsDouble());
+    m_CameraSubsystem.SetServos(m_xAxis.getAsDouble(), m_yAxis.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

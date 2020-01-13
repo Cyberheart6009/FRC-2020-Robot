@@ -10,8 +10,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import frc.robot.commands.DriveDistanceCommand;
+import frc.robot.commands.DriveTrain;
+import frc.robot.commands.CameraMover;
+import frc.robot.subsystems.CameraSubsystem;
+import frc.robot.subsystems.ChassisSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -23,19 +27,43 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final ChassisSubsystem m_ChassisSubsystem = new ChassisSubsystem();
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final CameraSubsystem m_CameraSubsystem = new CameraSubsystem();
 
-  private final XboxController controller = new XboxController(0);
-
-
-
+  private final XboxController driver = new XboxController(0);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    // This sets the default command for the cammera subsystem
+    m_CameraSubsystem.setDefaultCommand(
+      new CameraMover(
+        () -> {
+          return driver.getY(Hand.kRight) * 90 + 90;
+        },
+        () -> {
+          return driver.getX(Hand.kLeft) * 90 + 90; 
+        },
+        m_CameraSubsystem
+        )
+        );
+
+    // This sets the default command for the cammera subsystem
+    m_ChassisSubsystem.setDefaultCommand(
+      new DriveTrain(
+        () -> {
+          return driver.getY(Hand.kLeft) * 90 + 90;
+        },
+        () -> {
+          return driver.getX(Hand.kLeft) * 90 + 90; 
+        },
+        m_ChassisSubsystem
+        )
+        );
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -47,7 +75,7 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Joystick cameraJoystick = new Joystick(1);
+    //Joystick cameraJoystick = new Joystick(1);
   }
 
 
@@ -59,6 +87,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return new DriveDistanceCommand(m_ChassisSubsystem, 10, 1, 69420);
   }
 }
