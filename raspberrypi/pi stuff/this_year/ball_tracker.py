@@ -38,6 +38,7 @@ class GripPipeline:
         """
         # Step Blur0:
         self.__blur_input = source0
+        print(self.__blur_input)
         (self.blur_output) = self.__blur(self.__blur_input, self.__blur_type, self.__blur_radius)
 
         # Step HSV_Threshold0:
@@ -132,16 +133,72 @@ imageWidth = 640.0
 imageCenter = imageWidth/2
 # FIXME recalculate minArea = 200
 
+def __blur(src, type, radius):
+        """Softens an image using one of several filters.
+        Args:
+            src: The source mat (numpy.ndarray).
+            type: The blurType to perform represented as an int.
+            radius: The radius for the blur as a float.
+        Returns:
+            A numpy.ndarray that has been blurred.
+        """
+        if(type is BlurType.Box_Blur):
+            ksize = int(2 * round(radius) + 1)
+            return cv2.blur(src, (ksize, ksize))
+        elif(type is BlurType.Gaussian_Blur):
+            ksize = int(6 * round(radius) + 1)
+            return cv2.GaussianBlur(src, (ksize, ksize), round(radius))
+        elif(type is BlurType.Median_Filter):
+            ksize = int(2 * round(radius) + 1)
+            return cv2.medianBlur(src, ksize)
+        else:
+            return cv2.bilateralFilter(src, -1, round(radius), round(radius))
+
+def __find_blobs(input, min_area, circularity, dark_blobs):
+        """Detects groups of pixels in an image.
+        Args:
+            input: A numpy.ndarray.
+            min_area: The minimum blob size to be found.
+            circularity: The min and max circularity as a list of two numbers.
+            dark_blobs: A boolean. If true looks for black. Otherwise it looks for white.
+        Returns:
+            A list of KeyPoint.
+        """
+        params = cv2.SimpleBlobDetector_Params()
+        params.filterByColor = 1
+        params.blobColor = (0 if dark_blobs else 255)
+        params.minThreshold = 10
+        params.maxThreshold = 220
+        params.filterByArea = True
+        params.minArea = min_area
+        params.filterByCircularity = True
+        params.minCircularity = circularity[0]
+        params.maxCircularity = circularity[1]
+        params.filterByConvexity = False
+        params.filterByInertia = False
+        detector = cv2.SimpleBlobDetector_create(params)
+        return detector.detect(input)
+
+
 while True:
     ret, frame = cap.read()
-    
-    pipeline.process(frame)
-    
-    blobs = pipeline.find_blobs_output
+    frame1 = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    frame2 = __blur(frame1, BlurType.Box_Blur, 14.414414414414415)
+    #frame2 = cv2.GaussianBlur(frame1,(14,14),cv2.BORDER_DEFAULT)
 
-    print(blobs)
+    hsv_threshold_hue = [12.949640287769784, 36.06060606060607]
+    hsv_threshold_saturation = [61.915467625899275, 207.77777777777777]
+    hsv_threshold_value = [82.55395683453237, 255.0]
 
-    cv2.imshow("Filtering", frame)
+    frame3 = cv2.inRange(frame2, (hsv_threshold_hue[0], hsv_threshold_saturation[0], hsv_threshold_value[0]),  (hsv_threshold_hue[1], hsv_threshold_saturation[1], hsv_threshold_value[1]))
+
+    find_blobs_min_area = 0.0
+    find_blobs_circularity = [0.31654675658658255, 1.0]
+    find_blobs_dark_blobs = False
+
+    frame4 = __find_blobs(frame3, find_blobs_min_area, find_blobs_circularity, find_blobs_dark_blobs)
+
+    cv2.imshow("Filtering", frame4)
 
     k = cv2.waitKey(1)
     if  k == 27:
