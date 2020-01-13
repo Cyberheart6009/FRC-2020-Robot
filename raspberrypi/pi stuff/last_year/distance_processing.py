@@ -222,6 +222,7 @@ while True:
 
     pipeline.process(frame)
     contours = pipeline.find_contours_output
+    print("Contours = ", contours)
 
     # FIXME: *****    MAKE SURE TO CONVERT ALL ANGLES TO RADIANS IN THE FORMULAS    *****
     filtered_contours = []
