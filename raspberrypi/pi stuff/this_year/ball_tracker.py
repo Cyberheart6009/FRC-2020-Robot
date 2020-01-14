@@ -1,5 +1,5 @@
 import cv2
-import numpy
+import numpy as np
 import math
 from enum import Enum
 
@@ -196,7 +196,11 @@ while True:
     find_blobs_circularity = [0.31654675658658255, 1.0]
     find_blobs_dark_blobs = False
 
-    frame4 = __find_blobs(frame3, find_blobs_min_area, find_blobs_circularity, find_blobs_dark_blobs)
+    keypoints = __find_blobs(frame3, find_blobs_min_area, find_blobs_circularity, find_blobs_dark_blobs)
+
+    im_with_keypoints = cv2.drawKeypoints(frame3, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+    frame4 = im_with_keypoints
 
     cv2.imshow("Filtering", frame4)
 
