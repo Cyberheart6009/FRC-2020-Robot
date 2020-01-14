@@ -26,7 +26,7 @@ class GripPipeline:
 
         self.__find_blobs_input = self.hsv_threshold_output
         self.__find_blobs_min_area = 0.0
-        self.__find_blobs_circularity = [0.31654675658658255, 1.0]
+        self.__find_blobs_circularity = [0.51654675658658255, 1.0]
         self.__find_blobs_dark_blobs = False
 
         self.find_blobs_output = None
@@ -122,7 +122,7 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
 #cap.set(15, -11)
-#exposure_low = True
+exposure_low = True
 
 font= cv2.FONT_HERSHEY_SIMPLEX
 
@@ -154,6 +154,19 @@ def __blur(src, type, radius):
         else:
             return cv2.bilateralFilter(src, -1, round(radius), round(radius))
 
+def __hsv_threshold(input, hue, sat, val):
+        """Segment an image based on hue, saturation, and value ranges.
+        Args:
+            input: A BGR numpy.ndarray.
+            hue: A list of two numbers the are the min and max hue.
+            sat: A list of two numbers the are the min and max saturation.
+            lum: A list of two numbers the are the min and max value.
+        Returns:
+            A black and white numpy.ndarray.
+        """
+        out = cv2.cvtColor(input, cv2.COLOR_BGR2HSV)
+        return cv2.inRange(out, (hue[0], sat[0], val[0]),  (hue[1], sat[1], val[1]))
+
 def __find_blobs(input, min_area, circularity, dark_blobs):
         """Detects groups of pixels in an image.
         Args:
@@ -182,15 +195,15 @@ def __find_blobs(input, min_area, circularity, dark_blobs):
 print('Hi')
 while True:
     ret, frame = cap.read()
-    frame1 = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-    frame2 = __blur(frame1, BlurType.Box_Blur, 14.414414414414415)
+    
+    frame2 = __blur(frame, BlurType.Box_Blur, 14.414414414414415)
     #frame2 = cv2.GaussianBlur(frame1,(14,14),cv2.BORDER_DEFAULT)
 
     hsv_threshold_hue = [12.949640287769784, 36.06060606060607]
     hsv_threshold_saturation = [61.915467625899275, 207.77777777777777]
     hsv_threshold_value = [82.55395683453237, 255.0]
-
-    frame3 = cv2.inRange(frame2, (hsv_threshold_hue[0], hsv_threshold_saturation[0], hsv_threshold_value[0]),  (hsv_threshold_hue[1], hsv_threshold_saturation[1], hsv_threshold_value[1]))
+    frame3 = __hsv_threshold(frame2, hsv_threshold_hue, hsv_threshold_saturation, hsv_threshold_value)
+    #frame3 = cv2.inRange(frame2, (hsv_threshold_hue[0], hsv_threshold_saturation[0], hsv_threshold_value[0]),  (hsv_threshold_hue[1], hsv_threshold_saturation[1], hsv_threshold_value[1]))
 
     find_blobs_min_area = 0.0
     find_blobs_circularity = [0.31654675658658255, 1.0]
