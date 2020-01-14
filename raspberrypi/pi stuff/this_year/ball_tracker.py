@@ -214,13 +214,13 @@ def turnToBall(ballCoords):
     for i in ballCoords:
         if i[0] < imageCenter-5:
             # Turn left
-            return False
+            return 0
         else if i[0] > imageCenter+5:
             # Turn right
-            return True
+            return 2
         else:
             # Drive forward
-            return
+            return 1
 
 print('Hi')
 while True:
