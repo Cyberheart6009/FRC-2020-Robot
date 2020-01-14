@@ -179,7 +179,7 @@ def __find_blobs(input, min_area, circularity, dark_blobs):
         detector = cv2.SimpleBlobDetector_create(params)
         return detector.detect(input)
 
-
+print('Hi')
 while True:
     ret, frame = cap.read()
     frame1 = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
