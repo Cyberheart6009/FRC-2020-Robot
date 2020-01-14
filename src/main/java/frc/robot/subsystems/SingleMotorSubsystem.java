@@ -19,8 +19,8 @@ public class SingleMotorSubsystem extends SubsystemBase {
 
   private final SpeedController motor;
 
-  public SingleMotorSubsystem() {
-    motor = new Spark(4);
+  public SingleMotorSubsystem(int port) {
+    motor = new Spark(port);
   }
 
   public void variableOn(double value) {
@@ -28,12 +28,10 @@ public class SingleMotorSubsystem extends SubsystemBase {
   }
 
   public void fullForward() {
-    System.out.println("hello");
     motor.set(1);
   }
 
   public void fullBackward() {
-    System.out.println("goodbye");
     motor.set(-1);
   }
 

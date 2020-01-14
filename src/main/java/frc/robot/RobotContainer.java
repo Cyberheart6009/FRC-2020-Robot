@@ -19,6 +19,7 @@ import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.SingleMotorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -32,7 +33,8 @@ public class RobotContainer {
 
   //private final CameraSubsystem m_CameraSubsystem = new CameraSubsystem();
 
-  private final SingleMotorSubsystem m_MotorSubsystem = new SingleMotorSubsystem();
+  private final SingleMotorSubsystem m_intake = new SingleMotorSubsystem(4);
+  private final SingleMotorSubsystem m_launcher = new SingleMotorSubsystem(5);
 
   private final XboxController driver = new XboxController(0);
 
@@ -54,6 +56,14 @@ public class RobotContainer {
         )
         );
         */
+
+    m_launcher.setDefaultCommand(
+      new RunCommand(() -> {
+        System.out.println(driver.getY(Hand.kRight));
+        m_launcher.variableOn(driver.getY(Hand.kRight));
+      },
+      m_launcher)
+    );
 
     // This sets the default command for the cammera subsystem
     m_ChassisSubsystem.setDefaultCommand(
@@ -80,11 +90,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     new JoystickButton(driver, 1)
-      .whenPressed(() -> m_MotorSubsystem.fullBackward())
-      .whenReleased(() -> m_MotorSubsystem.fullStop());
+      .whenPressed(() -> m_intake.fullBackward())
+      .whenReleased(() -> m_intake.fullStop());
     new JoystickButton(driver, 2)
-      .whenPressed(() -> m_MotorSubsystem.fullForward())
-      .whenReleased(() -> m_MotorSubsystem.fullStop());
+      .whenPressed(() -> m_intake.fullForward())
+      .whenReleased(() -> m_intake.fullStop());
   }
 
 
