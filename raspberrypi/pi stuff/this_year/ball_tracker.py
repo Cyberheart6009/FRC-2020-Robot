@@ -215,7 +215,7 @@ def turnToBall(ballCoords):
         if i[0] < imageCenter-5:
             # Turn left
             return 0
-        else if i[0] > imageCenter+5:
+        elif i[0] > imageCenter+5:
             # Turn right
             return 2
         else:
