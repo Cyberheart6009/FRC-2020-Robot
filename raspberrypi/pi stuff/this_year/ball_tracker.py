@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import math
 from enum import Enum
+from networktables import NetworkTables
 
 class GripPipeline:
     """
@@ -132,6 +133,11 @@ ballDiameter = 7
 imageWidth = 640.0
 imageCenter = imageWidth/2
 # FIXME recalculate minArea = 200
+
+NetworkTables.initialize(server='10.60.9.2')
+sd = NetworkTables.getTable('SmartDashboard')
+
+
 
 def __blur(src, type, radius):
         """Softens an image using one of several filters.
