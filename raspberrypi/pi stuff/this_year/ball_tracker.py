@@ -118,7 +118,7 @@ BlurType = Enum('BlurType', 'Box_Blur Gaussian_Blur Median_Filter Bilateral_Filt
 
 pipeline = GripPipeline()
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
 #cap.set(15, -11)
@@ -192,6 +192,36 @@ def __find_blobs(input, min_area, circularity, dark_blobs):
         detector = cv2.SimpleBlobDetector_create(params)
         return detector.detect(input)
 
+def findClosestBall(keypoints):
+    # keypoints is a list of the raw keypoints, not keypoints.pt
+    # Returns index of the closest ball
+    indexCounter = 0
+    closestBall = 0
+    if len(keypoints) > 1:
+        for i in keypoints:
+            if i.size > closestBall:
+                closestBall = indexCounter 
+                indexCounter += 1
+            else:
+                indexCounter += 1
+        return closestBall
+    else:
+        return 
+        
+def turnToBall(ballCoords):
+    # FIXME DOESTN WORK
+    # Returns whether the robot has to turn right or left to get to the ball
+    for i in ballCoords:
+        if i[0] < imageCenter-5:
+            # Turn left
+            return False
+        else if i[0] > imageCenter+5:
+            # Turn right
+            return True
+        else:
+            # Drive forward
+            return
+
 print('Hi')
 while True:
     ret, frame = cap.read()
@@ -210,8 +240,14 @@ while True:
     find_blobs_dark_blobs = False
 
     keypoints = __find_blobs(frame3, find_blobs_min_area, find_blobs_circularity, find_blobs_dark_blobs)
+    
+    for i in keypoints:
+        print("Keypoints = ", i.pt)
+        
 
     im_with_keypoints = cv2.drawKeypoints(frame3, keypoints, np.array([]), (0,0,255), cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
+
+    print("Keypoints = ", keypoints)
 
     frame4 = im_with_keypoints
 
