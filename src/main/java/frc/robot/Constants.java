@@ -7,8 +7,6 @@
 
 package frc.robot;
 
-import java.util.ArrayList;
-
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -18,38 +16,59 @@ import java.util.ArrayList;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final class ClimberConstants {
-        public static final int kElevatorXMotorPort = 5;
-        public static final int kElevatorYMotorPort = 6;
-    }
-    public static final class ShooterConstants {
+    public static final class PWMConstants{
+        
+        //all 0 because i do not know the correct motor ports.
+        public static final int[] kLeftMotors = {0, 1}; //,1};
+        public static final int[] kRightMotors = {2, 3}; //,3};
+
+        public static final int kCameraXServoRange = 8;
+        public static final int kCameraYServoRange = 9;
+        public static final int kclimberXMotorPort = 5;
+        public static final int kclimberYMotorPort = 6;
         public static final int kShooterMotorPort = 7;
-    }
-    public static final class MotorConstants{
-        public static final int kLeftMotorPort = 0;
-        public static final int kRightMotorPort = 1;
     }
 
     public static final class EncoderConstants{
         public static final int kRightEncoderA = 0;
-        public static final int kRightEncoderB = 1;
+        public static final int kRightEncoderB = 6;
         public static final int kLeftEncoderA = 2;
+<<<<<<< HEAD
         public static final int kLeftEncoderB = 3;
         public static final int kElevatorEncoderA = 4;
         public static final int kElevatorEncoderB = 5;
         
+=======
+        public static final int kLeftEncoderB = 7;
+        public static final int kclimberEncoderA = 4;
+        public static final int kclimberEncoderB = 5;
+>>>>>>> 94aecb64e2af4cadac00eb579730619f85093ccc
         //placeholder value
         public static final double ENCODER_COUNTS_PER_INCH = 13.49;
+        
+        //placeholder values for PIDTurn
+        public static final boolean kGyroReversed = false;
+        public static final double kTurnToleranceDeg = 5;
+        public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
     }
 
-    public static final class CameraConstants{
-        // placeholder values since we don't know what servo they will be plugged into yet
-        public static final int kCameraXServoRange = 69;
-        public static final int kCameraYServoRange = 420;
-
+    public static final class TurnConstants{
+        //placeholder values
+        public static final double kTurnP = 0;
+        public static final double kTurnI = 0;
+        public static final double kTurnD = 0;
     }
-    
-  
 
-
+    public static final class XboxConstants{
+        public static final int kAButton = 1;
+        public static final int kBButton = 2;
+        public static final int kXButton = 3;
+        public static final int kYButton = 4;
+        public static final int kLBumper = 5;
+        public static final int kYBumper = 6;
+        public static final int kSelect = 7;
+        public static final int kStart = 8;
+        public static final int kLeftThumbPush = 9;
+        public static final int kRightThumbPush = 10;
+    }
 }

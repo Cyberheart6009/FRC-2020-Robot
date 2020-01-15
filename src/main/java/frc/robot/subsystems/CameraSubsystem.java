@@ -15,12 +15,10 @@ import frc.robot.Constants;
 public class CameraSubsystem extends SubsystemBase {
   private final Servo cameraX;
   private final Servo cameraY;
-  
-
 
   public CameraSubsystem() {
-      cameraX = new Servo(Constants.CameraConstants.kCameraXServoRange);
-      cameraY = new Servo(Constants.CameraConstants.kCameraYServoRange);
+      cameraX = new Servo(Constants.PWMConstants.kCameraXServoRange);
+      cameraY = new Servo(Constants.PWMConstants.kCameraYServoRange);
   }
 
   public void SetServos(double x, double y) {

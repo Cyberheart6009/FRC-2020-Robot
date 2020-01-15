@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Spark;
@@ -23,12 +25,14 @@ import java.util.ArrayList;
 
 public class ChassisSubsystem extends SubsystemBase {
 
-  private final SpeedController rightMotor;
-  private final SpeedController leftMotor;
-  private final SpeedControllerGroup motors;
+  private final SpeedController rightBackMotor, leftFrontMotor,leftBackMotor, rightFrontMotor;
+  private final SpeedControllerGroup leftMotors, rightMotors;
   
   private final Encoder rightEncoder;
   private final Encoder leftEncoder;
+
+  private final NetworkTableInstance instance;
+  private final NetworkTable table;
 
   AHRS gyro = new AHRS(SerialPort.Port.kMXP);
 
@@ -42,13 +46,29 @@ public class ChassisSubsystem extends SubsystemBase {
    */ 
 
   public ChassisSubsystem() {
-    leftMotor = new Spark(Constants.MotorConstants.kLeftMotorPort);
-    rightMotor = new Spark(Constants.MotorConstants.kRightMotorPort);  
-    rightMotor.setInverted(true);
-    motors = new SpeedControllerGroup(rightMotor, leftMotor);
+    leftFrontMotor = new Spark(0);
+    rightFrontMotor = new Spark(2);
+    leftBackMotor = new Spark(1);
+    rightBackMotor = new Spark(3);
 
-    driveBase = new DifferentialDrive(leftMotor, rightMotor);
-    driveBase.setRightSideInverted(false);
+    leftMotors = new SpeedControllerGroup(leftFrontMotor, leftBackMotor);
+    rightMotors = new SpeedControllerGroup(rightFrontMotor, rightBackMotor);
+
+    instance = NetworkTableInstance.getDefault();
+    table = instance.getTable("SmartDashboard");
+
+    
+    if (Constants.PWMConstants.kLeftBackMotorPort != null || Constants.PWMConstants.kRightBackMotorPort != null) {
+      rightMotors.setInverted(true);
+      driveBase = new DifferentialDrive(leftMotors, rightMotors);
+      driveBase.setRightSideInverted(false);
+    } else {
+      rightFrontMotor.setInverted(true);
+      driveBase = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
+      driveBase.setRightSideInverted(false);
+    }
+    
+
 
     
     leftEncoder = new Encoder(Constants.EncoderConstants.kLeftEncoderA, Constants.EncoderConstants.kLeftEncoderB, true);
@@ -77,7 +97,7 @@ public class ChassisSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+   // This method will be called once per scheduler run
   }
 
   public double getDistance(){

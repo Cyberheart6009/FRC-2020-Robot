@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -21,6 +21,7 @@ public class ClimberSubsystem extends SubsystemBase {
    * Creates a new subsystem.
    */
 
+<<<<<<< HEAD
   private final SpeedController elevatorX;
   private final SpeedController elevatorY;
   private final SpeedController elevator;
@@ -34,13 +35,33 @@ public class ClimberSubsystem extends SubsystemBase {
       leftElevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, true);
       rightElevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, false);
 
-      SmartDashboard.putBoolean("leftElevatorEncoder", "4.0");
+      instance = NetworkTableInstance.getDefault();
+      table = instance.getTable("SmartDashboard");
+  
+
+=======
+  private final SpeedController climberX;
+  private final SpeedController climberY;
+  private final SpeedController climber;
+  private final Encoder climberEncoder;
+
+  public ClimberSubsystem() {
+      climberX = new Spark(Constants.PWMConstants.kclimberXMotorPort);
+      climberY = new Spark(Constants.PWMConstants.kclimberYMotorPort);
+      climber = new SpeedControllerGroup(climberX, climberY);
+      climberEncoder = new Encoder(Constants.EncoderConstants.kclimberEncoderA, Constants.EncoderConstants.kclimberEncoderA, false);
+
+      SmartDashboard.putNumber("leftElevatorEncoderValue", leftElevatorEncoder.);
+>>>>>>> 94aecb64e2af4cadac00eb579730619f85093ccc
   }
 
-  @Override
-  public void climb(double speed ) {
+  public void Climb(double speed ) {
     // This method will be called once per scheduler run
-    elevator.set(speed);
+    climber.set(speed);
+  }
+
+  public double GetRawEncoder() {
+    return climberEncoder.getDistance();
   }
 }
  

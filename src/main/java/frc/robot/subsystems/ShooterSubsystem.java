@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -21,7 +20,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final SpeedController shooter;
 
   public ShooterSubsystem() {
-      shooter = new Spark(Constants.ShooterConstants.kShooterMotorPort);
+      shooter = new Spark(Constants.PWMConstants.kShooterMotorPort);
   }
 
   @Override

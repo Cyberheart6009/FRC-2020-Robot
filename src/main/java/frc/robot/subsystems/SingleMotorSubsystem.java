@@ -7,18 +7,36 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ExampleSubsystem extends SubsystemBase {
+public class SingleMotorSubsystem extends SubsystemBase {
   /**
-   * Creates a new ExampleSubsystem.
+   * Creates a new subsystem.
    */
-  public ExampleSubsystem() {
 
+  private final SpeedController motor;
+
+  public SingleMotorSubsystem(int port) {
+    motor = new Spark(port);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public void variableOn(double value) {
+    motor.set(value);
+  }
+
+  public void fullForward() {
+    motor.set(1);
+  }
+
+  public void fullBackward() {
+    motor.set(-1);
+  }
+
+  public void fullStop() {
+    if (motor.get() != 0) {
+      motor.set(0);
+    }
   }
 }
