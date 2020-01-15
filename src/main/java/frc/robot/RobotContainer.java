@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.DriveDistanceCommand;
-import frc.robot.commands.DriveTrain;
 import frc.robot.commands.CameraMover;
 import frc.robot.subsystems.CameraSubsystem;
 import frc.robot.subsystems.ChassisSubsystem;
@@ -33,8 +32,8 @@ public class RobotContainer {
 
   //private final CameraSubsystem m_CameraSubsystem = new CameraSubsystem();
 
-  private final SingleMotorSubsystem m_intake = new SingleMotorSubsystem(4);
-  private final SingleMotorSubsystem m_launcher = new SingleMotorSubsystem(5);
+  private final SingleMotorSubsystem m_Intake = new SingleMotorSubsystem(4);
+  private final SingleMotorSubsystem m_Launcher = new SingleMotorSubsystem(5);
 
   private final XboxController driver = new XboxController(0);
 
@@ -57,26 +56,20 @@ public class RobotContainer {
         );
         */
 
-    m_launcher.setDefaultCommand(
+    m_Launcher.setDefaultCommand(
       new RunCommand(() -> {
-        System.out.println(driver.getY(Hand.kRight));
-        m_launcher.variableOn(driver.getY(Hand.kRight));
+        //System.out.println(driver.getY(Hand.kLeft));
+        m_Launcher.variableOn(driver.getY(Hand.kLeft));
       },
-      m_launcher)
+      m_Launcher)
     );
 
-    // This sets the default command for the cammera subsystem
+    // This sets the default command for the chassis subsystem
     m_ChassisSubsystem.setDefaultCommand(
-      new DriveTrain(
-        () -> {
-          return driver.getY(Hand.kLeft);
-        },
-        () -> {
-          return driver.getX(Hand.kLeft); 
-        },
-        m_ChassisSubsystem
-        )
-        );
+      new RunCommand(() -> m_ChassisSubsystem.drive(driver.getY(Hand.kRight), driver.getX(Hand.kRight)), m_ChassisSubsystem)
+    );
+
+    m_Launcher.setDefaultCommand(new RunCommand(() -> m_Launcher.fullStop(), m_Launcher));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -89,12 +82,15 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(driver, 1)
-      .whenPressed(() -> m_intake.fullBackward())
-      .whenReleased(() -> m_intake.fullStop());
-    new JoystickButton(driver, 2)
-      .whenPressed(() -> m_intake.fullForward())
-      .whenReleased(() -> m_intake.fullStop());
+    new JoystickButton(driver, Constants.XboxConstants.kAButton)
+      .whenPressed(() -> m_Intake.fullBackward());
+    new JoystickButton(driver, Constants.XboxConstants.kBButton)
+      .whenPressed(() -> m_Intake.fullForward());
+
+    /*new RunCommand(() -> {
+      System.out.println("The thing might work");
+      m_Intake.variableOn(driver.getTriggerAxis(Hand.kLeft));
+    }, m_Intake).schedule();*/
   }
 
 
@@ -106,6 +102,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DriveDistanceCommand(m_ChassisSubsystem, 10, 1, 69420);
+    return new DriveDistanceCommand(m_ChassisSubsystem, 10, 1, 0);
   }
 }

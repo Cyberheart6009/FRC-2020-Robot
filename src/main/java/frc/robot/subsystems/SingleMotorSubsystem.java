@@ -10,7 +10,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 
 public class SingleMotorSubsystem extends SubsystemBase {
   /**
@@ -36,6 +35,8 @@ public class SingleMotorSubsystem extends SubsystemBase {
   }
 
   public void fullStop() {
-    motor.set(0);
+    if (motor.get() != 0) {
+      motor.set(0);
+    }
   }
 }

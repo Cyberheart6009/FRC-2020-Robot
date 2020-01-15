@@ -44,14 +44,17 @@ public class DriveDistanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    while (m_chassisSubsystem.getDistance() != m_distance){
+    if (m_chassisSubsystem.getDistance() != m_distance){
         m_chassisSubsystem.drive(m_speed, m_angle);
-    }    
+    } else {
+      this.end(false);
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_chassisSubsystem.stop();
   }
 
   // Returns true when the command should end.

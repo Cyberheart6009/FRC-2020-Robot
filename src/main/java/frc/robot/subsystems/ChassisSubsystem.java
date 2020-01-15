@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 
 public class ChassisSubsystem extends SubsystemBase {
 
-  private final SpeedController rightBackMotor, leftFrontMotor,leftBackMotor, rightFrontMotor;
   private final SpeedControllerGroup leftMotors, rightMotors;
   
   private final Encoder rightEncoder;
@@ -32,54 +32,43 @@ public class ChassisSubsystem extends SubsystemBase {
 
   private final DifferentialDrive driveBase;
 
-  //public double k_speed;
-  //public double k_angle;
-
   /**
    * Creates a new ExampleSubsystem.
    */ 
 
-  public ChassisSubsystem() {
-    leftFrontMotor = new Spark(0);
-    rightFrontMotor = new Spark(2);
-    leftBackMotor = new Spark(1);
-    rightBackMotor = new Spark(3);
-
-    leftMotors = new SpeedControllerGroup(leftFrontMotor, leftBackMotor);
-    rightMotors = new SpeedControllerGroup(rightFrontMotor, rightBackMotor);
-
-    
-    if (Constants.PWMConstants.kLeftBackMotorPort != null || Constants.PWMConstants.kRightBackMotorPort != null) {
-      rightMotors.setInverted(true);
-      driveBase = new DifferentialDrive(leftMotors, rightMotors);
-      driveBase.setRightSideInverted(false);
+  public ChassisSubsystem() {    
+    if (Constants.PWMConstants.kLeftMotors.length == 2 || Constants.PWMConstants.kRightMotors.length == 2) {
+      leftMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kLeftMotors[0]), new Spark(Constants.PWMConstants.kLeftMotors[1]));
+      rightMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kRightMotors[0]), new Spark(Constants.PWMConstants.kRightMotors[1]));
     } else {
-      rightFrontMotor.setInverted(true);
-      driveBase = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
-      driveBase.setRightSideInverted(false);
+      leftMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kLeftMotors[0]));
+      rightMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kRightMotors[0]));
     }
-    
 
-
+    driveBase = new DifferentialDrive(leftMotors, rightMotors);
+    driveBase.setRightSideInverted(false);
     
     leftEncoder = new Encoder(Constants.EncoderConstants.kLeftEncoderA, Constants.EncoderConstants.kLeftEncoderB, true);
     rightEncoder = new Encoder(Constants.EncoderConstants.kRightEncoderA, Constants.EncoderConstants.kRightEncoderB, false);
     
     gyro = new AHRS(SerialPort.Port.kMXP);
+    SmartDashboard.putNumber("hello", 1);
   }
 
   public void drive(double speed, double angle) {
-    //k_speed = speed;
-    //k_angle = angle;
     driveBase.arcadeDrive(speed, angle);
   }
 
-  public double GetGyroAngle(){
+  public void stop() {
+    driveBase.arcadeDrive(0, 0);
+  }
+
+  public double getGyroAngle(){
     return gyro.getYaw();
   }
   
   
-  public void GyroReset(){
+  public void gyroReset(){
     gyro.reset();
   }
 
