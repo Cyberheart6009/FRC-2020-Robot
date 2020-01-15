@@ -19,7 +19,7 @@ public class DriveDistanceCommand extends CommandBase {
   private double m_distance; 
 
   private double m_speed; 
-  private double m_angle; 
+  private double m_angle;
 
   private double startDistance;
 
