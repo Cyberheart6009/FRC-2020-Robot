@@ -137,6 +137,7 @@ imageCenter = imageWidth/2
 NetworkTables.initialize(server='10.60.9.2')
 sd = NetworkTables.getTable('SmartDashboard')
 
+turnValue = 3
 
 
 def __blur(src, type, radius):
@@ -220,13 +221,21 @@ def turnToBall(ballCoords):
     for i in ballCoords:
         if i[0] < imageCenter-5:
             # Turn left
+            turnValue = 0
             return 0
         elif i[0] > imageCenter+5:
             # Turn right
+            turnValue = 2
             return 2
         else:
             # Drive forward
+            turnValue = 1
             return 1
+
+#temporary values
+def publish_turn_value():
+    sd.putNumber("Turn Value", turnValue)
+
 
 print('Hi')
 while True:
