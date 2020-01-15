@@ -78,9 +78,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Intake Controls
     new JoystickButton(driver, Constants.XboxConstants.kAButton)
-      .whenPressed(() -> m_Intake.fullBackward());
+      .whileHeld(() -> m_Intake.fullBackward(), m_Intake);
     new JoystickButton(driver, Constants.XboxConstants.kBButton)
-      .whenPressed(() -> m_Intake.fullForward());
+      .whileHeld(() -> m_Intake.fullForward(), m_Intake);
   }
 
 
