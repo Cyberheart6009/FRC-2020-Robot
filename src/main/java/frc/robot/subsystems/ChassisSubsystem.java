@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 public class ChassisSubsystem extends SubsystemBase {
 
-  private final SpeedController rightBackMotor, leftFrontMotor,leftBackMotor, rightFrontMotor;
   private final SpeedControllerGroup leftMotors, rightMotors;
   
   private final Encoder rightEncoder;
@@ -45,31 +44,21 @@ public class ChassisSubsystem extends SubsystemBase {
    */ 
 
   public ChassisSubsystem() {
-    leftFrontMotor = new Spark(0);
-    rightFrontMotor = new Spark(2);
-    leftBackMotor = new Spark(1);
-    rightBackMotor = new Spark(3);
-
-    leftMotors = new SpeedControllerGroup(leftFrontMotor, leftBackMotor);
-    rightMotors = new SpeedControllerGroup(rightFrontMotor, rightBackMotor);
-
     instance = NetworkTableInstance.getDefault();
     table = instance.getTable("SmartDashboard");
 
     
-    if (Constants.PWMConstants.kLeftBackMotorPort != null || Constants.PWMConstants.kRightBackMotorPort != null) {
-      rightMotors.setInverted(true);
-      driveBase = new DifferentialDrive(leftMotors, rightMotors);
-      driveBase.setRightSideInverted(false);
+    if (Constants.PWMConstants.kLeftMotors.length == 2 || Constants.PWMConstants.kRightMotors.length == 2) {
+      leftMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kLeftMotors[0]), new Spark(Constants.PWMConstants.kLeftMotors[1]));
+      rightMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kRightMotors[0]), new Spark(Constants.PWMConstants.kRightMotors[1]));
     } else {
-      rightFrontMotor.setInverted(true);
-      driveBase = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
-      driveBase.setRightSideInverted(false);
+      leftMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kLeftMotors[0]));
+      rightMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kRightMotors[0]));
     }
-    
 
+    driveBase = new DifferentialDrive(leftMotors, rightMotors);
+    driveBase.setRightSideInverted(false);
 
-    
     leftEncoder = new Encoder(Constants.EncoderConstants.kLeftEncoderA, Constants.EncoderConstants.kLeftEncoderB, true);
     rightEncoder = new Encoder(Constants.EncoderConstants.kRightEncoderA, Constants.EncoderConstants.kRightEncoderB, false);
     

@@ -20,7 +20,7 @@ public class Auto extends SequentialCommandGroup {
       m_subsystem = subsystem;
     addCommands(
         // Drive forward the specified distance
-        new DriveDistanceCommand(m_subsystem, 5, 5,5)
+        new DriveDistanceCommand(m_subsystem, 5, 5)
         //... more commands for auto
         
         
