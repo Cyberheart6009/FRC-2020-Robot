@@ -8,12 +8,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.DriveDistanceCommand;
-import frc.robot.commands.CameraMover;
-import frc.robot.subsystems.CameraSubsystem;
+import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.SingleMotorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,35 +25,30 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
+  // The robot's subsystems
   private final ChassisSubsystem m_ChassisSubsystem = new ChassisSubsystem();
-
-  //private final CameraSubsystem m_CameraSubsystem = new CameraSubsystem();
-
+  private final CameraMount m_CameraSubsystem = new CameraMount();
   private final SingleMotorSubsystem m_Intake = new SingleMotorSubsystem(4);
   private final SingleMotorSubsystem m_Launcher = new SingleMotorSubsystem(5);
 
+  // Controller Definitions
   private final XboxController driver = new XboxController(0);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    /*
     // This sets the default command for the cammera subsystem
     m_CameraSubsystem.setDefaultCommand(
-      new CameraMover(
+      new RunCommand(
         () -> {
-          return driver.getY(Hand.kRight) * 90 + 90;
-        },
-        () -> {
-          return driver.getX(Hand.kLeft) * 90 + 90; 
+          m_CameraSubsystem.SetServos(driver.getY(Hand.kRight) * 90 + 90, driver.getX(Hand.kLeft) * 90 + 90);
         },
         m_CameraSubsystem
         )
         );
-        */
 
+    // Default Launcher Subsystem
     m_Launcher.setDefaultCommand(
       new RunCommand(() -> {
         //System.out.println(driver.getY(Hand.kLeft));
@@ -69,7 +62,8 @@ public class RobotContainer {
       new RunCommand(() -> m_ChassisSubsystem.drive(driver.getY(Hand.kRight), driver.getX(Hand.kRight)), m_ChassisSubsystem)
     );
 
-    m_Launcher.setDefaultCommand(new RunCommand(() -> m_Launcher.fullStop(), m_Launcher));
+    // Intake subsystem default command (turns it off by default)
+    m_Intake.setDefaultCommand(new RunCommand(() -> m_Intake.fullStop(), m_Intake));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -82,15 +76,11 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // Intake Controls
     new JoystickButton(driver, Constants.XboxConstants.kAButton)
       .whenPressed(() -> m_Intake.fullBackward());
     new JoystickButton(driver, Constants.XboxConstants.kBButton)
       .whenPressed(() -> m_Intake.fullForward());
-
-    /*new RunCommand(() -> {
-      System.out.println("The thing might work");
-      m_Intake.variableOn(driver.getTriggerAxis(Hand.kLeft));
-    }, m_Intake).schedule();*/
   }
 
 
@@ -102,6 +92,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DriveDistanceCommand(m_ChassisSubsystem, 10, 1, 0);
+    return new Auto(m_ChassisSubsystem);
   }
 }
