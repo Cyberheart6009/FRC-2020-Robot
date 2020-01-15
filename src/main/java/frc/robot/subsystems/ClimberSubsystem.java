@@ -7,11 +7,14 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class ClimberSubsystem extends SubsystemBase {
   /**
@@ -21,13 +24,17 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SpeedController elevatorX;
   private final SpeedController elevatorY;
   private final SpeedController elevator;
-  private final Encoder elevatorEncoder;
+  private final Encoder leftElevatorEncoder;
+  private final Encoder rightElevatorEncoder;
 
   public ClimberSubsystem() {
       elevatorX = new Spark(Constants.ClimberConstants.kElevatorXMotorPort);
       elevatorY = new Spark(Constants.ClimberConstants.kElevatorYMotorPort);
       elevator = new SpeedControllerGroup(elevatorX, elevatorY);
-      elevatorEncoder = new Encoder (Constants.EncoderConstants.kElevatorEncoder);
+      leftElevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, true);
+      rightElevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, false);
+
+      SmartDashboard.putBoolean("leftElevatorEncoder", "4.0");
   }
 
   @Override

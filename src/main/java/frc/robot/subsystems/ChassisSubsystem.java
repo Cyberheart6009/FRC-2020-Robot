@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -54,6 +55,9 @@ public class ChassisSubsystem extends SubsystemBase {
     rightEncoder = new Encoder(Constants.EncoderConstants.kRightEncoderA, Constants.EncoderConstants.kRightEncoderB, false);
     
     gyro = new AHRS(SerialPort.Port.kMXP);
+
+    SmartDashboard.putNumber("test", "3");
+
   }
 
   public void drive(double speed, double angle) {
