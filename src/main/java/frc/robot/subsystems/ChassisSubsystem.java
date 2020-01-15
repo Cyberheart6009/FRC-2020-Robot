@@ -9,13 +9,14 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,52 +24,70 @@ import java.util.ArrayList;
 
 public class ChassisSubsystem extends SubsystemBase {
 
+  private final SpeedController rightBackMotor, leftFrontMotor,leftBackMotor, rightFrontMotor;
   private final SpeedControllerGroup leftMotors, rightMotors;
   
   private final Encoder rightEncoder;
   private final Encoder leftEncoder;
 
+  private final NetworkTableInstance instance;
+  private final NetworkTable table;
+
   AHRS gyro = new AHRS(SerialPort.Port.kMXP);
 
   private final DifferentialDrive driveBase;
+
+  //public double k_speed;
+  //public double k_angle;
 
   /**
    * Creates a new ExampleSubsystem.
    */ 
 
-  public ChassisSubsystem() {    
-    if (Constants.PWMConstants.kLeftMotors.length == 2 || Constants.PWMConstants.kRightMotors.length == 2) {
-      leftMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kLeftMotors[0]), new Spark(Constants.PWMConstants.kLeftMotors[1]));
-      rightMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kRightMotors[0]), new Spark(Constants.PWMConstants.kRightMotors[1]));
-    } else {
-      leftMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kLeftMotors[0]));
-      rightMotors = new SpeedControllerGroup(new Spark(Constants.PWMConstants.kRightMotors[0]));
-    }
+  public ChassisSubsystem() {
+    leftFrontMotor = new Spark(0);
+    rightFrontMotor = new Spark(2);
+    leftBackMotor = new Spark(1);
+    rightBackMotor = new Spark(3);
 
-    driveBase = new DifferentialDrive(leftMotors, rightMotors);
-    driveBase.setRightSideInverted(false);
+    leftMotors = new SpeedControllerGroup(leftFrontMotor, leftBackMotor);
+    rightMotors = new SpeedControllerGroup(rightFrontMotor, rightBackMotor);
+
+    instance = NetworkTableInstance.getDefault();
+    table = instance.getTable("SmartDashboard");
+
+    
+    if (Constants.PWMConstants.kLeftBackMotorPort != null || Constants.PWMConstants.kRightBackMotorPort != null) {
+      rightMotors.setInverted(true);
+      driveBase = new DifferentialDrive(leftMotors, rightMotors);
+      driveBase.setRightSideInverted(false);
+    } else {
+      rightFrontMotor.setInverted(true);
+      driveBase = new DifferentialDrive(leftFrontMotor, rightFrontMotor);
+      driveBase.setRightSideInverted(false);
+    }
+    
+
+
     
     leftEncoder = new Encoder(Constants.EncoderConstants.kLeftEncoderA, Constants.EncoderConstants.kLeftEncoderB, true);
     rightEncoder = new Encoder(Constants.EncoderConstants.kRightEncoderA, Constants.EncoderConstants.kRightEncoderB, false);
     
     gyro = new AHRS(SerialPort.Port.kMXP);
-    SmartDashboard.putNumber("hello", 1);
   }
 
   public void drive(double speed, double angle) {
+    //k_speed = speed;
+    //k_angle = angle;
     driveBase.arcadeDrive(speed, angle);
   }
 
-  public void stop() {
-    driveBase.arcadeDrive(0, 0);
-  }
-
-  public double getGyroAngle(){
+  public double GetGyroAngle(){
     return gyro.getYaw();
   }
   
   
-  public void gyroReset(){
+  public void GyroReset(){
     gyro.reset();
   }
 
