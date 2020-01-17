@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -28,8 +30,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final Encoder rightElevatorEncoder;
 
   public ClimberSubsystem() {
-      elevatorX = new Spark(Constants.ClimberConstants.kElevatorXMotorPort);
-      elevatorY = new Spark(Constants.ClimberConstants.kElevatorYMotorPort);
+      elevatorX = new Spark(Constants.PWMConstants.kclimberXMotorPort);
+      elevatorY = new Spark(Constants.PWMConstants.kclimberYMotorPort);
       elevator = new SpeedControllerGroup(elevatorX, elevatorY);
       leftElevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, true);
       rightElevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, false);
