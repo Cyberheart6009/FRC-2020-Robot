@@ -33,16 +33,12 @@ public final class Constants {
         public static final int kRightEncoderA = 0;
         public static final int kRightEncoderB = 6;
         public static final int kLeftEncoderA = 2;
-<<<<<<< HEAD
-        public static final int kLeftEncoderB = 3;
         public static final int kElevatorEncoderA = 4;
         public static final int kElevatorEncoderB = 5;
         
-=======
         public static final int kLeftEncoderB = 7;
         public static final int kclimberEncoderA = 4;
         public static final int kclimberEncoderB = 5;
->>>>>>> 94aecb64e2af4cadac00eb579730619f85093ccc
         //placeholder value
         public static final double ENCODER_COUNTS_PER_INCH = 13.49;
         
