@@ -28,6 +28,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SpeedController elevator;
   private final Encoder leftElevatorEncoder;
   private final Encoder rightElevatorEncoder;
+  private final NetworkTableInstance instance;
+  private final NetworkTable table;
 
   public ClimberSubsystem() {
       elevatorX = new Spark(Constants.PWMConstants.kclimberXMotorPort);
