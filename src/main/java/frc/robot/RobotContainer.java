@@ -61,7 +61,7 @@ public class RobotContainer {
 
     // This sets the default command for the chassis subsystem
     m_ChassisSubsystem.setDefaultCommand(
-      new RunCommand(() -> m_ChassisSubsystem.drive(driver.getY(Hand.kRight), driver.getX(Hand.kRight)), m_ChassisSubsystem)
+      new RunCommand(() -> m_ChassisSubsystem.drive(driver.getX(Hand.kRight), driver.getY(Hand.kRight)), m_ChassisSubsystem)
     );
 
     // Intake subsystem default command (turns it off by default)
@@ -84,7 +84,9 @@ public class RobotContainer {
     new JoystickButton(driver, Constants.XboxConstants.kBButton)
       .whileHeld(() -> m_Intake.fullForward(), m_Intake);
     new JoystickButton(driver, Constants.XboxConstants.kYButton)
-      .whileHeld(() -> m_PIDTurn.execute());  
+      .whileHeld(() -> m_PIDTurn.execute()); 
+    new JoystickButton(driver, Constants.XboxConstants.kXButton)
+      .whenPressed(new RunCommand(() -> m_ChassisSubsystem.GyroReset())); 
   }
 
 

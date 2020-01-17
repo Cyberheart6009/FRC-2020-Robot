@@ -11,8 +11,12 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;;
+=======
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+>>>>>>> c41ae1c510be66700ea34163079cfab8f8557a08
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
@@ -24,25 +28,19 @@ public class ClimberSubsystem extends SubsystemBase {
    * Creates a new subsystem.
    */
 
-  private final SpeedController elevatorX;
-  private final SpeedController elevatorY;
-  private final SpeedController elevator;
-  private final Encoder leftElevatorEncoder;
-  private final Encoder rightElevatorEncoder;
+  private final SpeedController climberX,climberY;
+  private final SpeedControllerGroup climber;
+  private final Encoder climberEncoder;
   private final NetworkTableInstance instance;
   private final NetworkTable table;
 
   public ClimberSubsystem() {
-      elevatorX = new Spark(Constants.PWMConstants.kclimberXMotorPort);
-      elevatorY = new Spark(Constants.PWMConstants.kclimberYMotorPort);
-      elevator = new SpeedControllerGroup(elevatorX, elevatorY);
-      leftElevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, true);
-      rightElevatorEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, false);
+      climberX = new Spark(Constants.PWMConstants.kclimberXMotorPort);
+      climberY = new Spark(Constants.PWMConstants.kclimberYMotorPort);
+      climber = new SpeedControllerGroup(climberX, climberY);
+      climberEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, true);
 
-      instance = NetworkTableInstance.getDefault();
-      table = instance.getTable("SmartDashboard");
-
-      SmartDashboard.putNumber("elevator encoder", 4);
+      
       
 
   }

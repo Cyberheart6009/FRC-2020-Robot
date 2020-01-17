@@ -19,8 +19,8 @@ public final class Constants {
     public static final class PWMConstants{
         
         //all 0 because i do not know the correct motor ports.
-        public static final int[] kLeftMotors = {0, 1}; //,1};
-        public static final int[] kRightMotors = {2, 3}; //,3};
+        public static final int[] kLeftMotors = {0}; //,1};
+        public static final int[] kRightMotors = {2}; //,3};
 
         public static final int kCameraXServoRange = 8;
         public static final int kCameraYServoRange = 9;

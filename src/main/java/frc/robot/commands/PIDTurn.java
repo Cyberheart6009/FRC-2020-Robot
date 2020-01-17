@@ -30,7 +30,7 @@ public class PIDTurn extends PIDCommand {
         // Set reference to target
         targetAngleDegrees,
         // Pipe output to turn robot
-        output -> chassis.drive(0, output),
+        output -> chassis.drive(output, (targetAngleDegrees / Math.abs(targetAngleDegrees))),
         // Require the drive
         chassis);
 
