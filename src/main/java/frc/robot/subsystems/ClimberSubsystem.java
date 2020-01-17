@@ -42,13 +42,8 @@ public class ClimberSubsystem extends SubsystemBase {
       instance = NetworkTableInstance.getDefault();
       table = instance.getTable("SmartDashboard");
 
-      class ElevatorEncoder;
-      private Shuffleboard.getTab("Values");
-
-
-
-
-  
+      SmartDashboard.putNumber("elevator encoder", 4);
+      
 
   }
 
