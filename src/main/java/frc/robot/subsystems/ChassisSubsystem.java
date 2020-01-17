@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Constants;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class ChassisSubsystem extends SubsystemBase {
     leftEncoder = new Encoder(Constants.EncoderConstants.kLeftEncoderA, Constants.EncoderConstants.kLeftEncoderB, true);
     rightEncoder = new Encoder(Constants.EncoderConstants.kRightEncoderA, Constants.EncoderConstants.kRightEncoderB, false);
     
-    gyro = new AHRS(SerialPort.Port.kMXP);
+    gyro = new AHRS(SPI.Port.kMXP);
     SmartDashboard.putNumber("test", 3);
   }
 
@@ -73,7 +74,7 @@ public class ChassisSubsystem extends SubsystemBase {
   }
 
   public double GetGyroAngle(){
-    return gyro.getYaw();
+    return gyro.getAngle();
   }
   
   
@@ -84,7 +85,12 @@ public class ChassisSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
    // This method will be called once per scheduler run
-   SmartDashboard.putNumber("Gyro", gyro.getAngle());
+   System.out.println("Kill me adrian");
+   SmartDashboard.putNumber("Roll", gyro.getRoll());
+   SmartDashboard.putNumber("Yaw", gyro.getYaw());
+   SmartDashboard.putNumber("Pitch", gyro.getPitch());
+   SmartDashboard.putNumber("Angle", gyro.getAngle());
+   SmartDashboard.putNumber("X", gyro.getRawGyroX());
   }
 
   public double getDistance(){
