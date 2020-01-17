@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 
-public class CameraSubsystem extends SubsystemBase {
+public class CameraMount extends SubsystemBase {
   private final Servo cameraX;
   private final Servo cameraY;
 
-  public CameraSubsystem() {
+  public CameraMount() {
       cameraX = new Servo(Constants.PWMConstants.kCameraXServoRange);
       cameraY = new Servo(Constants.PWMConstants.kCameraYServoRange);
   }

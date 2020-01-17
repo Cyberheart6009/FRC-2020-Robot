@@ -26,7 +26,7 @@ public class PIDTurn extends PIDCommand {
     super(
         new PIDController(Constants.TurnConstants.kTurnP, Constants.TurnConstants.kTurnI, Constants.TurnConstants.kTurnD),
         // Close loop on heading
-        chassis::getHeading,
+        chassis::GetGyroAngle,
         // Set reference to target
         targetAngleDegrees,
         // Pipe output to turn robot
