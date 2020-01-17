@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,7 +38,10 @@ public class ClimberSubsystem extends SubsystemBase {
       instance = NetworkTableInstance.getDefault();
       table = instance.getTable("SmartDashboard");
 
-      SmartDashboard.getNumber("rightElevatorEncoder value", rightElevatorEncoder.getNumber);
+      class ElevatorEncoder;
+      private Shuffleboard.getTab("Values");
+
+
 
 
   
