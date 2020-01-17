@@ -64,7 +64,7 @@ public class ChassisSubsystem extends SubsystemBase {
     
     gyro = new AHRS(SerialPort.Port.kMXP);
 
-    SmartDashboard.putNumber("test", "3");
+    SmartDashboard.putNumber("test", 3);
 
   }
 

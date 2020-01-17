@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import frc.robot.commands.DriveDistanceCommand;
+import frc.robot.commands.PIDTurn;
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.SingleMotorSubsystem;
@@ -30,6 +31,7 @@ public class RobotContainer {
   private final CameraMount m_CameraSubsystem = new CameraMount();
   private final SingleMotorSubsystem m_Intake = new SingleMotorSubsystem(4);
   private final SingleMotorSubsystem m_Launcher = new SingleMotorSubsystem(5);
+  private final PIDTurn m_PIDTurn = new PIDTurn(90.0, m_ChassisSubsystem);
 
   // Controller Definitions
   private final XboxController driver = new XboxController(0);
@@ -81,6 +83,8 @@ public class RobotContainer {
       .whileHeld(() -> m_Intake.fullBackward(), m_Intake);
     new JoystickButton(driver, Constants.XboxConstants.kBButton)
       .whileHeld(() -> m_Intake.fullForward(), m_Intake);
+    new JoystickButton(driver, Constants.XboxConstants.kYButton)
+      .whileHeld(() -> m_PIDTurn.execute());  
   }
 
 
