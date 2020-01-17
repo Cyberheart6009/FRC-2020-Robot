@@ -119,7 +119,7 @@ BlurType = Enum('BlurType', 'Box_Blur Gaussian_Blur Median_Filter Bilateral_Filt
 
 pipeline = GripPipeline()
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 cap.set(3, 640)
 cap.set(4, 480)
 #cap.set(15, -11)
