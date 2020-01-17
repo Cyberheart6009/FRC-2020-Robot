@@ -63,9 +63,7 @@ public class ChassisSubsystem extends SubsystemBase {
     rightEncoder = new Encoder(Constants.EncoderConstants.kRightEncoderA, Constants.EncoderConstants.kRightEncoderB, false);
     
     gyro = new AHRS(SerialPort.Port.kMXP);
-
     SmartDashboard.putNumber("test", 3);
-
   }
 
   public void drive(double speed, double angle) {
@@ -86,6 +84,7 @@ public class ChassisSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
    // This method will be called once per scheduler run
+   SmartDashboard.putNumber("Gyro", gyro.getAngle());
   }
 
   public double getDistance(){
