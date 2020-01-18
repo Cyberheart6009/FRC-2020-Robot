@@ -40,7 +40,12 @@ public class ClimberSubsystem extends SubsystemBase {
       climber = new SpeedControllerGroup(climberX, climberY);
       climberEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, true);
 
-      
+      instance = NetworkTableInstance.getDefault();
+      table = instance.getTable("SmartDashboard");
+
+  public void smartDashboard () {
+    SmartDashboard.getNumber("Climber Encoder", climberEncoder.get());
+  }
       
 
   }
