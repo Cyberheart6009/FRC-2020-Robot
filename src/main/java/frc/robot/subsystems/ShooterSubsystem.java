@@ -20,7 +20,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private final SpeedController shooter;
 
   public ShooterSubsystem() {
-      shooter = new Spark(Constants.PWMConstants.kShooterMotorPort);
+      shooter = new Spark(Constants.PWMPorts.kShooterMotorPort);
   }
 
   @Override

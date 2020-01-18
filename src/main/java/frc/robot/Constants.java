@@ -16,11 +16,13 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final class PWMConstants{
+    public static final double turnInversion = 1;
+
+    public static final class PWMPorts{
         
         //all 0 because i do not know the correct motor ports.
-        public static final int[] kLeftMotors = {0}; //,1};
-        public static final int[] kRightMotors = {2}; //,3};
+        public static final int[] kLeftMotors = {2}; //,1};
+        public static final int[] kRightMotors = {0}; //,3};
 
         public static final int kCameraXServoRange = 8;
         public static final int kCameraYServoRange = 9;
@@ -29,7 +31,7 @@ public final class Constants {
         public static final int kShooterMotorPort = 7;
     }
 
-    public static final class EncoderConstants{
+    public static final class EncoderPorts {
         public static final int kRightEncoderA = 0;
         public static final int kRightEncoderB = 6;
         public static final int kLeftEncoderA = 2;
@@ -44,24 +46,27 @@ public final class Constants {
         
         //placeholder values for PIDTurn
         public static final boolean kGyroReversed = false;
-        public static final double kTurnToleranceDeg = 5;
-        public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
     }
 
-    public static final class TurnConstants{
+    public static final class PIDTurn {
         //placeholder values
-        public static final double kTurnP = 0;
-        public static final double kTurnI = 0;
-        public static final double kTurnD = 0;
+        public static final double kTurnToleranceDeg = 2;
+        public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
+
+        private static final double kU = 0.5;
+        private static final double tU = 7/6.5;
+        public static final double kTurnP = 12; //0.45*kU; //0.6*kU;
+        public static final double kTurnI = 0; //0.54*kU/tU; //1.2*kU/tU;
+        public static final double kTurnD = 3.5; //3*kU*tU/40;
     }
 
-    public static final class XboxConstants{
+    public static final class Control {
         public static final int kAButton = 1;
         public static final int kBButton = 2;
         public static final int kXButton = 3;
         public static final int kYButton = 4;
         public static final int kLBumper = 5;
-        public static final int kYBumper = 6;
+        public static final int kRBumper = 6;
         public static final int kSelect = 7;
         public static final int kStart = 8;
         public static final int kLeftThumbPush = 9;

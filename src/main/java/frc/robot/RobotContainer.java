@@ -31,7 +31,6 @@ public class RobotContainer {
   private final CameraMount m_CameraSubsystem = new CameraMount();
   private final SingleMotorSubsystem m_Intake = new SingleMotorSubsystem(4);
   private final SingleMotorSubsystem m_Launcher = new SingleMotorSubsystem(5);
-  private final PIDTurn m_PIDTurn = new PIDTurn(90.0, m_ChassisSubsystem);
 
   // Controller Definitions
   private final XboxController driver = new XboxController(0);
@@ -54,14 +53,14 @@ public class RobotContainer {
     m_Launcher.setDefaultCommand(
       new RunCommand(() -> {
         //System.out.println(driver.getY(Hand.kLeft));
-        m_Launcher.variableOn(driver.getY(Hand.kLeft));
+        m_Launcher.variableOn(driver.getY(Hand.kRight));
       },
       m_Launcher)
     );
 
     // This sets the default command for the chassis subsystem
     m_ChassisSubsystem.setDefaultCommand(
-      new RunCommand(() -> m_ChassisSubsystem.drive(driver.getX(Hand.kRight), driver.getY(Hand.kRight)), m_ChassisSubsystem)
+      new RunCommand(() -> m_ChassisSubsystem.drive(driver.getY(Hand.kLeft), (Constants.turnInversion) * driver.getX(Hand.kLeft)), m_ChassisSubsystem)
     );
 
     // Intake subsystem default command (turns it off by default)
@@ -79,17 +78,19 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Intake Controls
-    new JoystickButton(driver, Constants.XboxConstants.kAButton)
-      .whileHeld(() -> m_Intake.fullBackward(), m_Intake);
-    new JoystickButton(driver, Constants.XboxConstants.kBButton)
-      .whileHeld(() -> m_Intake.fullForward(), m_Intake);
-    new JoystickButton(driver, Constants.XboxConstants.kYButton)
-      .whileHeld(() -> m_PIDTurn.execute()); 
-    new JoystickButton(driver, Constants.XboxConstants.kXButton)
-      .whenPressed(new RunCommand(() -> m_ChassisSubsystem.GyroReset())); 
+    new JoystickButton(driver, Constants.Control.kRBumper)
+      .whenPressed(() -> m_ChassisSubsystem.changeGear());
+    new JoystickButton(driver, Constants.Control.kYButton)
+      .whenPressed(new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15)); 
+    new JoystickButton(driver, Constants.Control.kXButton)
+      .whenPressed(() -> m_ChassisSubsystem.GyroReset());
+
+    new JoystickButton(driver, Constants.Control.kAButton)
+      .whileHeld(() -> m_ChassisSubsystem.drive(0.5, 0), m_ChassisSubsystem);
+    new JoystickButton(driver, Constants.Control.kBButton)
+      .whileHeld(() -> m_ChassisSubsystem.drive(-0.5, 0), m_ChassisSubsystem);
+    
   }
-
-
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

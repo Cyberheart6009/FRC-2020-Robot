@@ -17,8 +17,8 @@ public class CameraMount extends SubsystemBase {
   private final Servo cameraY;
 
   public CameraMount() {
-      cameraX = new Servo(Constants.PWMConstants.kCameraXServoRange);
-      cameraY = new Servo(Constants.PWMConstants.kCameraYServoRange);
+      cameraX = new Servo(Constants.PWMPorts.kCameraXServoRange);
+      cameraY = new Servo(Constants.PWMPorts.kCameraYServoRange);
   }
 
   public void SetServos(double x, double y) {
