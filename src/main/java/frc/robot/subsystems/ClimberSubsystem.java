@@ -31,17 +31,13 @@ public class ClimberSubsystem extends SubsystemBase {
   private final SpeedController climberX,climberY;
   private final SpeedControllerGroup climber;
   private final Encoder climberEncoder;
-  private final NetworkTableInstance instance;
-  private final NetworkTable table;
 
   public ClimberSubsystem() {
       climberX = new Spark(Constants.PWMConstants.kclimberXMotorPort);
       climberY = new Spark(Constants.PWMConstants.kclimberYMotorPort);
       climber = new SpeedControllerGroup(climberX, climberY);
       climberEncoder = new Encoder(Constants.EncoderConstants.kElevatorEncoderA, Constants.EncoderConstants.kElevatorEncoderB, true);
-
-      instance = NetworkTableInstance.getDefault();
-      table = instance.getTable("SmartDashboard");
+      
 
   public void smartDashboard () {
     SmartDashboard.getNumber("Climber Encoder", climberEncoder.get());
