@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.PIDTurn;
 import frc.robot.subsystems.CameraMount;
@@ -81,15 +82,26 @@ public class RobotContainer {
     new JoystickButton(driver, Constants.Control.kRBumper)
       .whenPressed(() -> m_ChassisSubsystem.changeGear());
     new JoystickButton(driver, Constants.Control.kYButton)
-      .whenPressed(new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15)); 
+      .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
     new JoystickButton(driver, Constants.Control.kXButton)
       .whenPressed(() -> m_ChassisSubsystem.GyroReset());
 
+    /*
     new JoystickButton(driver, Constants.Control.kAButton)
       .whileHeld(() -> m_ChassisSubsystem.drive(0.5, 0), m_ChassisSubsystem);
     new JoystickButton(driver, Constants.Control.kBButton)
       .whileHeld(() -> m_ChassisSubsystem.drive(-0.5, 0), m_ChassisSubsystem);
-    
+    */
+    new JoystickButton(driver, Constants.Control.kAButton)
+      .whenPressed(() -> {
+        Constants.PIDTurn.kTurnP += 0.005;
+        SmartDashboard.putNumber("kP", Constants.PIDTurn.kTurnP);
+      });
+    new JoystickButton(driver, Constants.Control.kBButton)
+      .whenPressed(() -> {
+        Constants.PIDTurn.kTurnP -= 0.005;
+        SmartDashboard.putNumber("kP", Constants.PIDTurn.kTurnP);
+      });
   }
 
   /**

@@ -15,7 +15,7 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
+public class Constants {
     public static final double turnInversion = 1;
 
     public static final class PWMPorts{
@@ -48,16 +48,16 @@ public final class Constants {
         public static final boolean kGyroReversed = false;
     }
 
-    public static final class PIDTurn {
+    public static class PIDTurn {
         //placeholder values
         public static final double kTurnToleranceDeg = 2;
         public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
 
         private static final double kU = 0.5;
         private static final double tU = 7/6.5;
-        public static final double kTurnP = 12; //0.45*kU; //0.6*kU;
+        public static double kTurnP = 0.01; //0.45*kU; //0.6*kU;
         public static final double kTurnI = 0; //0.54*kU/tU; //1.2*kU/tU;
-        public static final double kTurnD = 3.5; //3*kU*tU/40;
+        public static final double kTurnD = 0; //3*kU*tU/40;
     }
 
     public static final class Control {

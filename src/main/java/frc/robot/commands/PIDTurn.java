@@ -20,21 +20,22 @@ public class PIDTurn extends PIDCommand {
 
   public PIDTurn(double targetAngleDegrees, ChassisSubsystem chassis) {
     super(
-        new PIDController(Constants.PIDTurn.kTurnP, Constants.PIDTurn.kTurnI, Constants.PIDTurn.kTurnD),
-        // Close loop on heading
-        chassis::GetGyroAngle,
-        // Set reference to target
-        targetAngleDegrees,
-        // Pipe output to turn robot
-        output -> {
-          double direction = output / Math.abs(output);
-          double converted = ((output / 360) * 0.30) + (0.70 * direction);
-          System.out.println("PID Converted: " + converted);
-          SmartDashboard.putNumber("PID Converted", converted);
-          chassis.turnFeed(converted);
-        },
-        // Require the drive
-        chassis);
+      new PIDController(Constants.PIDTurn.kTurnP, Constants.PIDTurn.kTurnI, Constants.PIDTurn.kTurnD),
+      // Close loop on heading
+      chassis::GetGyroAngle,
+      // Set reference to target
+      targetAngleDegrees,
+      // Pipe output to turn robot
+      output -> {
+        System.out.println("kTurnP: " + Constants.PIDTurn.kTurnP);
+        System.out.println("PID Output: " + output);
+        SmartDashboard.putNumber("PID Output", output);
+        chassis.turnFeed(output);
+      },
+      // Require the drive
+      chassis
+    );
+    System.out.println("New PIDTurn Created");
 
     // Set the controller to be continuous (because it is an angle controller)
     getController().enableContinuousInput(-180, 180);
