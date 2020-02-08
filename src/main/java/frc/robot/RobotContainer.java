@@ -85,6 +85,10 @@ public class RobotContainer {
       .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
     new JoystickButton(driver, Constants.Control.kXButton)
       .whenPressed(() -> m_ChassisSubsystem.GyroReset());
+    new JoystickButton(driver, Constants.Control.kLBumper)
+      .whenPressed(new DriveDistanceCommand(m_ChassisSubsystem, 100, 0.7).withTimeout(15));
+    new JoystickButton(driver, Constants.Control.kBButton)
+      .whenPressed(() -> m_ChassisSubsystem.resetEncoders());
 
     /*
     new JoystickButton(driver, Constants.Control.kAButton)

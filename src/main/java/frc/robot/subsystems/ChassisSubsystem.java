@@ -75,8 +75,8 @@ public class ChassisSubsystem extends SubsystemBase {
     shifter = new DoubleSolenoid(1, 0, 1);
 
     // Assigns encoders to their ports
-    leftEncoder = new Encoder(Constants.EncoderPorts.kLeftEncoderA, Constants.EncoderPorts.kLeftEncoderB, true);
-    rightEncoder = new Encoder(Constants.EncoderPorts.kRightEncoderA, Constants.EncoderPorts.kRightEncoderB, false);
+    leftEncoder = new Encoder(Constants.EncoderPorts.kLeftEncoderA, Constants.EncoderPorts.kLeftEncoderB, false);
+    rightEncoder = new Encoder(Constants.EncoderPorts.kRightEncoderA, Constants.EncoderPorts.kRightEncoderB, true);
 
     // Sets the Gyro Port
     gyro = new AHRS(SPI.Port.kMXP);
@@ -129,6 +129,10 @@ public class ChassisSubsystem extends SubsystemBase {
     }
   }
 
+  public double getGyroYaw() {
+    return gyro.getYaw();
+  }
+
   @Override
   public void periodic() {
    // This method will be called once per scheduler run
@@ -137,10 +141,16 @@ public class ChassisSubsystem extends SubsystemBase {
    SmartDashboard.putNumber("Pitch", gyro.getPitch());
    SmartDashboard.putNumber("Angle", gyro.getAngle());
    SmartDashboard.putNumber("X", gyro.getRawGyroX());
+   SmartDashboard.putNumber("Distance 2", getDistance());
+   SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
+   SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
   }
 
+
   public double getDistance(){
-    return ((double) (leftEncoder.get() + rightEncoder.get()) / (Constants.EncoderPorts.ENCODER_COUNTS_PER_INCH * 2));
+    double distance = (leftEncoder.get() + rightEncoder.get()) / (Constants.EncoderPorts.ENCODER_COUNTS_PER_INCH * 2);
+    SmartDashboard.putNumber("Distance", distance);
+    return (distance);
   }
 
   public void resetEncoders() {
