@@ -19,16 +19,14 @@ public class Constants {
     public static final double turnInversion = 1;
 
     public static final class PWMPorts{
-        
-        //all 0 because i do not know the correct motor ports.
-        public static final int[] kLeftMotors = {2,1};
-        public static final int[] kRightMotors = {7 , 3};
+        public static final int[] kLeftMotors = {0, 1};
+        public static final int[] kRightMotors = {2, 3};
 
-        public static final int kCameraXServoRange = 8;
-        public static final int kCameraYServoRange = 9;
-        public static final int kclimberXMotorPort = 5;
-        public static final int kclimberYMotorPort = 6;
-        public static final int kLauncherMotorPort = 4;
+        public static final int kCameraXServoRange = 4;
+        public static final int kCameraYServoRange = 5;
+        public static final int kclimberXMotorPort = 6;
+        public static final int kclimberYMotorPort = 7;
+        public static final int kLauncherMotorPort = 8;
     }
 
     public static final class EncoderPorts {
