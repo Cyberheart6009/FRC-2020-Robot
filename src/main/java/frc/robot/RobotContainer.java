@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveDistanceCommand;
+import frc.robot.commands.FollowTarget;
 import frc.robot.commands.PIDTurn;
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.ChassisSubsystem;
@@ -30,8 +31,8 @@ public class RobotContainer {
   // The robot's subsystems
   private final ChassisSubsystem m_ChassisSubsystem = new ChassisSubsystem();
   private final CameraMount m_CameraSubsystem = new CameraMount();
-  private final SingleMotorSubsystem m_Intake = new SingleMotorSubsystem(4);
-  private final SingleMotorSubsystem m_Launcher = new SingleMotorSubsystem(5);
+  private final SingleMotorSubsystem m_Intake = new SingleMotorSubsystem(0);
+  private final SingleMotorSubsystem m_Launcher = new SingleMotorSubsystem(Constants.PWMPorts.kLauncherMotorPort);
 
   // Controller Definitions
   private final XboxController driver = new XboxController(0);
@@ -64,9 +65,6 @@ public class RobotContainer {
       new RunCommand(() -> m_ChassisSubsystem.drive(driver.getY(Hand.kLeft), (Constants.turnInversion) * driver.getX(Hand.kLeft)), m_ChassisSubsystem)
     );
 
-    // Intake subsystem default command (turns it off by default)
-    m_Intake.setDefaultCommand(new RunCommand(() -> m_Intake.fullStop(), m_Intake));
-
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -81,17 +79,14 @@ public class RobotContainer {
     // Intake Controls
     new JoystickButton(driver, Constants.Control.kRBumper)
       .whenPressed(() -> m_ChassisSubsystem.changeGear());
+    new JoystickButton(driver, Constants.Control.kLBumper)
+      .whileHeld(() -> m_Intake.variableOn(-0.75))
+      .whenReleased(()-> m_Intake.variableOn(0));
     new JoystickButton(driver, Constants.Control.kYButton)
       .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
     new JoystickButton(driver, Constants.Control.kXButton)
       .whenPressed(() -> m_ChassisSubsystem.GyroReset());
 
-    /*
-    new JoystickButton(driver, Constants.Control.kAButton)
-      .whileHeld(() -> m_ChassisSubsystem.drive(0.5, 0), m_ChassisSubsystem);
-    new JoystickButton(driver, Constants.Control.kBButton)
-      .whileHeld(() -> m_ChassisSubsystem.drive(-0.5, 0), m_ChassisSubsystem);
-    */
     new JoystickButton(driver, Constants.Control.kAButton)
       .whenPressed(() -> {
         Constants.PIDTurn.kTurnP += 0.005;
@@ -102,6 +97,8 @@ public class RobotContainer {
         Constants.PIDTurn.kTurnP -= 0.005;
         SmartDashboard.putNumber("kP", Constants.PIDTurn.kTurnP);
       });
+    new JoystickButton(driver, Constants.Control.kStart)
+      .whenPressed(new FollowTarget(m_ChassisSubsystem, () -> SmartDashboard.getNumber("CentroidOffset", 0)));
   }
 
   /**

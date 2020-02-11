@@ -23,6 +23,7 @@ public class SingleMotorSubsystem extends SubsystemBase {
   }
 
   public void variableOn(double value) {
+    System.out.println("Fucking work");
     motor.set(value);
   }
 
