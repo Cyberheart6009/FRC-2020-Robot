@@ -33,12 +33,11 @@ public class Constants {
 
     public static final class EncoderPorts {
         public static final int kRightEncoderA = 0;
-        public static final int kRightEncoderB = 6;
+        public static final int kRightEncoderB = 1;
         public static final int kLeftEncoderA = 2;
+        public static final int kLeftEncoderB = 3;
         public static final int kElevatorEncoderA = 4;
         public static final int kElevatorEncoderB = 5;
-        
-        public static final int kLeftEncoderB = 7;
         public static final int kclimberEncoderA = 4;
         public static final int kclimberEncoderB = 5;
         //placeholder value
