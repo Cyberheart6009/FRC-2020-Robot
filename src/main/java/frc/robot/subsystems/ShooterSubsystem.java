@@ -13,14 +13,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class ShooterSubsystem extends SubsystemBase {
-  /**
-   * Creates a new subsystem.
-   */
-
-  private final SpeedController shooter;
+  private final Spark shooterOne, shooterTwo;
 
   public ShooterSubsystem() {
-      shooter = new Spark(Constants.PWMPorts.kLauncherMotorPort);
+      shooterOne = new Spark(Constants.PWMPorts.kShootMotor1);
+      shooterTwo = new Spark(Constants.PWMPorts.kShootMotor2);
+  }
+
+  public void setFlywheel(double speed) {
+    shooterOne.set(speed);
+    shooterTwo.set(speed);
   }
 
   @Override

@@ -5,6 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+/*
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -13,37 +14,30 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.ChassisSubsystem;
 
-/**
- * A command that will turn the robot to the specified angle.
- */
-public class PIDTurn extends PIDCommand {
+public class PIDStraight extends PIDCommand {
 
-  public PIDTurn(double targetAngleDegrees, ChassisSubsystem chassis) {
-    super(
+  public PIDStraight(double distance, ChassisSubsystem chassis) {
       new PIDController(Constants.PIDTurn.kTurnP, Constants.PIDTurn.kTurnI, Constants.PIDTurn.kTurnD),
       // Close loop on heading
       chassis::GetGyroAngle,
       // Set reference to target
-      targetAngleDegrees,
+      distance,
       // Pipe output to turn robot
       output -> {
-        System.out.println("kTurnP: " + Constants.PIDTurn.kTurnP);
-        System.out.println("PID Output: " + output);
-        SmartDashboard.putNumber("PID Output", output);
-        chassis.drive(0, output);
-      },
-      // Require the drive
-      chassis
-    );
+        System.out.println("kTurnPStraight: " + Constants.PIDTurn.kTurnP);
+        System.out.println("PIDStraight Output: " + output);
+        SmartDashboard.putNumber("PIDStraight Output", output);
+        chassis.drive(output, 0);
     System.out.println("New PIDTurn Created");
 
     // Set the controller to be continuous (because it is an angle controller)
-    getController().enableContinuousInput(-180, 180);
+    getController().disableContinuousInput();
 
     // Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
     // setpoint before it is considered as having reached the reference
     getController()
         .setTolerance(Constants.PIDTurn.kTurnToleranceDeg, Constants.PIDTurn.kTurnRateToleranceDegPerS);
+
   }
 
   @Override
@@ -52,3 +46,4 @@ public class PIDTurn extends PIDCommand {
     return getController().atSetpoint();
   }
 }
+*/

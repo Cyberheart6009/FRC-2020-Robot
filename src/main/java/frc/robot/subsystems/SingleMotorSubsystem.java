@@ -22,20 +22,19 @@ public class SingleMotorSubsystem extends SubsystemBase {
     motor = new Spark(port);
   }
 
-  public void variableOn(double value) {
-    System.out.println("Fucking work");
+  public void set(double value) {
     motor.set(value);
   }
 
-  public void fullForward() {
+  public void forward() {
     motor.set(1);
   }
 
-  public void fullBackward() {
+  public void reverse() {
     motor.set(-1);
   }
 
-  public void fullStop() {
+  public void stop() {
     if (motor.get() != 0) {
       motor.set(0);
     }

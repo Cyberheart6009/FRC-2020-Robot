@@ -28,8 +28,8 @@ public class ClimberSubsystem extends SubsystemBase {
   private final Encoder climberEncoder;
 
   public ClimberSubsystem() {
-      climberX = new Spark(Constants.PWMPorts.kclimberXMotorPort);
-      climberY = new Spark(Constants.PWMPorts.kclimberYMotorPort);
+      climberX = new Spark(11);
+      climberY = new Spark(12);
       climber = new SpeedControllerGroup(climberX, climberY);
       climberEncoder = new Encoder(Constants.EncoderPorts.kElevatorEncoderA, Constants.EncoderPorts.kElevatorEncoderB, true);
   }
