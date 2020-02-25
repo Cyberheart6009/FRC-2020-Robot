@@ -14,7 +14,7 @@ public class ShooterCommand extends CommandBase {
   private final ShooterSubsystem m_shooterSubsystem;
 
   public ShooterCommand(ShooterSubsystem subsystem) {
-    this.m_shooterSubsystem = subsystem;
+    m_shooterSubsystem = subsystem;
 
     addRequirements(subsystem);
   }

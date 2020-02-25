@@ -103,7 +103,14 @@ public class ChassisSubsystem extends SubsystemBase {
     return gyro.getAngle();
   }
   
-  
+  public SpeedControllerGroup getRightMotor() {
+    return rightMotors;
+}
+
+public SpeedControllerGroup getLeftMotor() {
+    return leftMotors;
+}
+
   public void GyroReset(){
     System.out.println("Resetting Gyro");
     gyro.reset();
