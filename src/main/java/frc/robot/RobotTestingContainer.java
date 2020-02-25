@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.FollowTarget;
 import frc.robot.commands.PIDTurn;
+import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.SingleMotorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -26,9 +28,14 @@ import frc.robot.commands.AutoModes.*;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
-public class RobotContainer {
+public class RobotTestingContainer {
   // The robot's subsystems
   private final ChassisSubsystem m_ChassisSubsystem = new ChassisSubsystem();
+  private final SingleMotorSubsystem m_SingleSubOne = new SingleMotorSubsystem(4);
+  private final SingleMotorSubsystem m_SingleSubTwo = new SingleMotorSubsystem(5);
+  private final SingleMotorSubsystem m_SingleSubThree = new SingleMotorSubsystem(6);
+  private final SingleMotorSubsystem m_SingleSubFour = new SingleMotorSubsystem(7);
+  private final SingleMotorSubsystem m_SingleSubFive = new SingleMotorSubsystem(8);
 
   // Controller Definitions
   private final XboxController driver = new XboxController(0);
@@ -36,11 +43,11 @@ public class RobotContainer {
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() {
-    // This sets the default command for the chassis subsystem
-    m_ChassisSubsystem.setDefaultCommand(
-      new RunCommand(() -> m_ChassisSubsystem.drive(driver.getY(Hand.kLeft), (Constants.turnInversion) * driver.getX(Hand.kLeft)), m_ChassisSubsystem)
-    );
+  public RobotTestingContainer() {
+    // The Drive Command
+    m_ChassisSubsystem.setDefaultCommand(new RunCommand(()-> 
+      m_ChassisSubsystem.drive(driver.getY(Hand.kLeft), driver.getX(Hand.kLeft)), 
+      m_ChassisSubsystem));
 
     // Configure the button bindings
     configureButtonBindings();
@@ -53,30 +60,14 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Intake Controls
-    new JoystickButton(driver, Constants.Control.kRBumper)
-      .whenPressed(() -> m_ChassisSubsystem.changeGear());
-    new JoystickButton(driver, Constants.Control.kYButton)
-      .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
-    new JoystickButton(driver, Constants.Control.kXButton)
-      .whenPressed(() -> m_ChassisSubsystem.GyroReset());
-    new JoystickButton(driver, Constants.Control.kLBumper)
-      .whenPressed(new DriveDistanceCommand(m_ChassisSubsystem, 100, 0.7).withTimeout(15));
-    new JoystickButton(driver, Constants.Control.kBButton)
-      .whenPressed(() -> m_ChassisSubsystem.resetEncoders());
-
     new JoystickButton(driver, Constants.Control.kAButton)
-      .whenPressed(() -> {
-        Constants.PIDTurn.kTurnP += 0.005;
-        SmartDashboard.putNumber("kP", Constants.PIDTurn.kTurnP);
-      });
+      .whenPressed(new RunCommand(()->m_SingleSubOne.set(0.7)));
+
     new JoystickButton(driver, Constants.Control.kBButton)
-      .whenPressed(() -> {
-        Constants.PIDTurn.kTurnP -= 0.005;
-        SmartDashboard.putNumber("kP", Constants.PIDTurn.kTurnP);
-      });
-    new JoystickButton(driver, Constants.Control.kStart)
-      .whenPressed(new FollowTarget(m_ChassisSubsystem, () -> SmartDashboard.getNumber("CentroidOffset", 0)));
+      .whenPressed(new RunCommand(()->m_SingleSubOne.forward()));
+
+    new JoystickButton(driver, Constants.Control.kLBumper)
+      .whenPressed(new RunCommand(() -> m_ChassisSubsystem.changeGear()));
   }
 
   /**

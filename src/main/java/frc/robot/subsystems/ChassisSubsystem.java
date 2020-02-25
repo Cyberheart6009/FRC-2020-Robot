@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -92,11 +91,15 @@ public class ChassisSubsystem extends SubsystemBase {
     driveBase.arcadeDrive(speed, angle);
   }
 
+  public void voltDrive(double leftMotorVolts, double rightMotorVolts) {
+    leftMotors.setVoltage(leftMotorVolts);
+    leftMotors.setVoltage(rightMotorVolts);
+  }
+
   public void turnFeed(double velocity) {
-    double turnCalculation = turnFeedForward.calculate(1);
+    double turnCalculation = turnFeedForward.calculate(velocity);
     SmartDashboard.putNumber("Feed Forward", turnCalculation);
-    System.out.println(0);
-    drive(0, velocity); //+ turnCalculation);
+    voltDrive(-velocity, velocity);
   }
 
   public double GetGyroAngle(){

@@ -7,26 +7,26 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+public class ShooterFeederSubsystem extends SubsystemBase {
+  private final Spark feed, antiJam;
 
-public class CameraMount extends SubsystemBase {
-  private final Servo cameraX;
-  private final Servo cameraY;
-
-  public CameraMount() {
-      cameraX = new Servo(9);
-      cameraY = new Servo(10);
+  public ShooterFeederSubsystem() {
+      feed = new Spark(Constants.PWMPorts.kFeedMotor);  
+      antiJam = new Spark(Constants.PWMPorts.kAntiJamMotor);
   }
 
-  public void SetServos(double x, double y) {
-    cameraX.setAngle(x);
-    cameraY.setAngle(y);
+  public void setFeed(double speed) {
+    feed.set(speed);
   }
 
-
+  public void setAntiJam(double speed) {
+    antiJam.set(speed);
+}
 
   @Override
   public void periodic() {

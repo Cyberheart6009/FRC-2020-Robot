@@ -21,14 +21,14 @@ public class Constants {
     public static final class PWMPorts{
         
         //all 0 because i do not know the correct motor ports.
-        public static final int[] kLeftMotors = {2,1};
-        public static final int[] kRightMotors = {7 , 3};
+        public static final int[] kLeftMotors = {0, 1};
+        public static final int[] kRightMotors = {2, 3};
 
-        public static final int kCameraXServoRange = 8;
-        public static final int kCameraYServoRange = 9;
-        public static final int kclimberXMotorPort = 5;
-        public static final int kclimberYMotorPort = 6;
-        public static final int kLauncherMotorPort = 4;
+        public static final int kShootMotor1 = 4;
+        public static final int kShootMotor2 = 5;
+        public static final int kFeedMotor = 6;
+        public static final int kAntiJamMotor = 7;
+        public static final int kIntakeMotor = 8;
     }
 
     public static final class EncoderPorts {
@@ -49,14 +49,14 @@ public class Constants {
 
     public static class PIDTurn {
         //placeholder values
-        public static final double kTurnToleranceDeg = 2;
+        public static final double kTurnToleranceDeg = 1;
         public static final double kTurnRateToleranceDegPerS = 10; // degrees per second
 
         private static final double kU = 0.5;
         private static final double tU = 7/6.5;
-        public static double kTurnP = 0.01; //0.45*kU; //0.6*kU;
+        public static double kTurnP = 0.1; //0.45*kU; //0.6*kU;
         public static final double kTurnI = 0; //0.54*kU/tU; //1.2*kU/tU;
-        public static final double kTurnD = 0; //3*kU*tU/40;
+        public static final double kTurnD = 0.007; //3*kU*tU/40;
     }
 
     public static final class Control {
