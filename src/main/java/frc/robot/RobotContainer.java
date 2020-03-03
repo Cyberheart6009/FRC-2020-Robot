@@ -15,6 +15,8 @@ import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.FollowTarget;
 import frc.robot.commands.PIDTurn;
 import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -29,6 +31,8 @@ import frc.robot.commands.AutoModes.*;
 public class RobotContainer {
   // The robot's subsystems
   private final ChassisSubsystem m_ChassisSubsystem = new ChassisSubsystem();
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
 
   // Controller Definitions
   private final XboxController driver = new XboxController(0);
@@ -58,6 +62,7 @@ public class RobotContainer {
       .whenPressed(() -> m_ChassisSubsystem.changeGear());
     new JoystickButton(driver, Constants.Control.kYButton)
       .whenPressed(() -> {
+        System.out.println("YB");
         double currentAngle = SmartDashboard.getNumber("BallAngle", 0.0);
         new PIDTurn(currentAngle, m_ChassisSubsystem).withTimeout(15).schedule();
       }); 
@@ -91,6 +96,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new Auto(m_ChassisSubsystem);
+    return new Auto(m_ChassisSubsystem, m_ShooterSubsystem, m_IntakeSubsystem);
   }
 }

@@ -112,6 +112,6 @@ public class RobotContainerFinal {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new Auto(m_ChassisSubsystem);
+    return new Auto(m_ChassisSubsystem, m_ShooterSubsystem, m_IntakeSubsystem);
   }
 }

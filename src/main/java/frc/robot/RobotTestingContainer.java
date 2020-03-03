@@ -16,6 +16,8 @@ import frc.robot.commands.FollowTarget;
 import frc.robot.commands.PIDTurn;
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SingleMotorSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -36,6 +38,8 @@ public class RobotTestingContainer {
   private final SingleMotorSubsystem m_SingleSubThree = new SingleMotorSubsystem(6);
   private final SingleMotorSubsystem m_SingleSubFour = new SingleMotorSubsystem(7);
   private final SingleMotorSubsystem m_SingleSubFive = new SingleMotorSubsystem(8);
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
 
   // Controller Definitions
   private final XboxController driver = new XboxController(0);
@@ -77,6 +81,6 @@ public class RobotTestingContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new Auto(m_ChassisSubsystem);
+    return new Auto(m_ChassisSubsystem, m_ShooterSubsystem, m_IntakeSubsystem);
   }
 }

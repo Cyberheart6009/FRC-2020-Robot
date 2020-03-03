@@ -36,7 +36,7 @@ public class Auto extends SequentialCommandGroup {
         // Turns the robot a specified angle
         new TurnInPlaceCommand(c_subsystem, 1, 100),
         // Aligns with the rocket ship
-        new FollowTarget(c_subsystem, offset),
+        //new FollowTarget(c_subsystem, offset),
         // Shoot the ball
         new ShooterCommand(s_subsystem),
         
@@ -49,7 +49,7 @@ public class Auto extends SequentialCommandGroup {
         ),
 
         new DriveDistanceCommand(c_subsystem, 1, 1),
-        new FollowTarget(c_subsystem, offset),
+        //new FollowTarget(c_subsystem, offset),
         new ShooterCommand(s_subsystem)       
         );
   }
