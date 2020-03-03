@@ -31,6 +31,7 @@ public class Auto extends SequentialCommandGroup {
     // Place holder while we don't know the value
     DoubleSupplier offset;
 	addCommands(
+        /*
         // Drive forward the specified distance
         new DriveDistanceCommand(c_subsystem, 1, 1),
         // Turns the robot a specified angle
@@ -50,7 +51,7 @@ public class Auto extends SequentialCommandGroup {
 
         new DriveDistanceCommand(c_subsystem, 1, 1),
         new FollowTarget(c_subsystem, offset),
-        new ShooterCommand(s_subsystem)       
+        new ShooterCommand(s_subsystem)     */   
         );
   }
 }
