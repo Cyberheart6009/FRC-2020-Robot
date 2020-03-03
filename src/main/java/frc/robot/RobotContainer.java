@@ -60,7 +60,12 @@ public class RobotContainer {
     new JoystickButton(driver, Constants.Control.kRBumper)
       .whenPressed(() -> m_ChassisSubsystem.changeGear());
     new JoystickButton(driver, Constants.Control.kYButton)
-      .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
+      .whenPressed(() -> {
+        double currentAngle = SmartDashboard.getNumber("BallAngle", 0.0);
+        new PIDTurn(currentAngle, m_ChassisSubsystem).withTimeout(15).schedule();
+      }); 
+    //new JoystickButton(driver, Constants.Control.kYButton)
+    //  .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
     new JoystickButton(driver, Constants.Control.kXButton)
       .whenPressed(() -> {
         m_ChassisSubsystem.GyroReset();

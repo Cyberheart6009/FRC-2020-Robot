@@ -32,6 +32,10 @@ public class IntakeSubsystem extends SubsystemBase {
     autoLockEnabled = true;
   }
 
+  public Spark getSuccMotor(){
+    return intake;
+  }
+
   public void setIntake(double speed) {
       intake.set(speed);
       lockIntakeTimer = System.currentTimeMillis();
