@@ -35,7 +35,7 @@ public class DriveDistanceCommand extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public DriveDistanceCommand(ChassisSubsystem subsystem, double distance, double speed) {
+  public DriveDistanceCommand(double distance, double speed, ChassisSubsystem subsystem) {
     m_chassisSubsystem = subsystem;
     m_distance = distance;
     m_speed = speed;
@@ -55,8 +55,9 @@ public class DriveDistanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double thresholdDistance = 0;
     SmartDashboard.putNumber("Yaw difference", startYaw - m_chassisSubsystem.getGyroYaw());
+    /*
+    double thresholdDistance = 0;
     if (m_chassisSubsystem.getDistance() - startDistance < m_distance - thresholdDistance){
         if (hitEnd == false) {
           m_chassisSubsystem.drive(m_speed, startYaw - m_chassisSubsystem.getGyroYaw());
@@ -69,6 +70,10 @@ public class DriveDistanceCommand extends CommandBase {
     } else {
       finished = true;
     }
+    */
+    if (m_chassisSubsystem.getDistance() - startDistance < m_distance) {
+      m_chassisSubsystem.drive(m_speed, 0);
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -80,6 +85,10 @@ public class DriveDistanceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return finished;
+    if (m_chassisSubsystem.getDistance() - startDistance > m_distance) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

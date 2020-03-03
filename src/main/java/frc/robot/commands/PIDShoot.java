@@ -12,27 +12,27 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.ShooterFeederSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 
 /**
  * A command that will turn the robot to the specified angle.
  */
-public class PIDTurn extends PIDCommand {
+public class PIDShoot extends PIDCommand {
 
-  public PIDTurn(double targetAngleDegrees, ChassisSubsystem chassis) {
+  public PIDShoot(double targetRPM, ShooterSubsystem shooter) {
     super(
-      new PIDController(Constants.PIDTurn.kTurnP, Constants.PIDTurn.kTurnI, Constants.PIDTurn.kTurnD),
+      new PIDController(Constants.PIDShoot.kTurnP, Constants.PIDShoot.kTurnI, Constants.PIDShoot.kTurnD),
       // Close loop on heading
-      chassis::GetGyroAngle,
+      shooter::getRotationsPerMinute,
       // Set reference to target
-      targetAngleDegrees,
+      targetRPM,
       // Pipe output to turn robot
       output -> {
-        //SmartDashboard.putNumber("PID Output", output);
-        chassis.sideDrive(output, -output);
-        System.out.println(System.currentTimeMillis());
+        shooter.set(output);;
       },
       // Require the drive
-      chassis
+      shooter
     );
 
     // Set the controller to be continuous (because it is an angle controller)
@@ -41,7 +41,7 @@ public class PIDTurn extends PIDCommand {
     // Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
     // setpoint before it is considered as having reached the reference
     getController()
-        .setTolerance(Constants.PIDTurn.kTurnToleranceDeg, Constants.PIDTurn.kTurnRateToleranceDegPerS);
+        .setTolerance(Constants.PIDShoot.kTurnToleranceDeg, Constants.PIDShoot.kTurnRateToleranceDegPerS);
   }
 
   @Override

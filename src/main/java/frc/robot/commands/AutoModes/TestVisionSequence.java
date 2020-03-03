@@ -2,8 +2,8 @@ package frc.robot.commands.AutoModes;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -11,7 +11,7 @@ import frc.robot.subsystems.*;
  * A complex auto command that drives forward, releases a hatch, and then drives
  * backward.
  */
-public class Auto extends SequentialCommandGroup {
+public class TestVisionSequence extends SequentialCommandGroup {
   /**
    * Creates a new ComplexAuto.
    *
@@ -20,19 +20,10 @@ public class Auto extends SequentialCommandGroup {
    */
   public ChassisSubsystem m_subsystem;
 
-  public Auto(ChassisSubsystem subsystem) {
-      m_subsystem = subsystem;
-    DoubleSupplier offset;
-	addCommands(
-        // Drive forward the specified distance
-        new DriveDistanceCommand(5, 5, m_subsystem),
-        // Turns the robot a specified angle
-        new TurnInPlaceCommand(m_subsystem, 1, 100)
-        // Aligns with the rocket ship
-        
-        //... more commands for auto
-        
-        
-        );
+  public TestVisionSequence(double angle, double distance, ChassisSubsystem chassisSubsystem) {
+	  addCommands(
+      new PIDTurn(SmartDashboard.getNumber("TargetAngle", 0), chassisSubsystem),
+      new DriveDistanceCommand(SmartDashboard.getNumber("DistanceHeight", 0) - 100, 1, chassisSubsystem)
+    );
   }
 }
