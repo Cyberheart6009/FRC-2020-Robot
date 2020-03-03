@@ -23,24 +23,14 @@ public class ClimberSubsystem extends SubsystemBase {
    * Creates a new subsystem.
    */
 
-  private final SpeedController climberX,climberY;
-  private final SpeedControllerGroup climber;
-  private final Encoder climberEncoder;
+  private final Spark climber;
 
   public ClimberSubsystem() {
-      climberX = new Spark(11);
-      climberY = new Spark(12);
-      climber = new SpeedControllerGroup(climberX, climberY);
-      climberEncoder = new Encoder(Constants.EncoderPorts.kElevatorEncoderA, Constants.EncoderPorts.kElevatorEncoderB, true);
+      climber = new Spark(Constants.PWMPorts.kClimberMotor);
   }
 
-  public void Climb(double speed ) {
-    // This method will be called once per scheduler run
+  public void climb(double speed ) {
     climber.set(speed);
-  }
-
-  public double GetRawEncoder() {
-    return climberEncoder.getDistance();
   }
 }
  

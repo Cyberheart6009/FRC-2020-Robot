@@ -67,7 +67,6 @@ public class ChassisSubsystem extends SubsystemBase {
 
     driveBase = new DifferentialDrive(leftMotors, rightMotors);
     driveBase.setRightSideInverted(true);
-
     // Initializes compressor & shifter
     compressor = new Compressor(1);
     compressor.enabled();
@@ -89,30 +88,17 @@ public class ChassisSubsystem extends SubsystemBase {
     //k_speed = speed;
     //k_angle = angle;
     driveBase.arcadeDrive(speed, angle);
+    System.out.println(angle);
   }
 
-  public void voltDrive(double leftMotorVolts, double rightMotorVolts) {
-    leftMotors.setVoltage(leftMotorVolts);
-    leftMotors.setVoltage(rightMotorVolts);
-  }
-
-  public void turnFeed(double velocity) {
-    double turnCalculation = turnFeedForward.calculate(velocity);
-    SmartDashboard.putNumber("Feed Forward", turnCalculation);
-    voltDrive(-velocity, velocity);
+  public void sideDrive(double leftMotorSpeed, double rightMotorSpeed) {
+    leftMotors.set(leftMotorSpeed);
+    rightMotors.set(-rightMotorSpeed);
   }
 
   public double GetGyroAngle(){
     return gyro.getAngle();
   }
-  
-  public SpeedControllerGroup getRightMotor() {
-    return rightMotors;
-}
-
-public SpeedControllerGroup getLeftMotor() {
-    return leftMotors;
-}
 
   public void GyroReset(){
     System.out.println("Resetting Gyro");

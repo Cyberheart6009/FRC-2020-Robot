@@ -15,9 +15,12 @@ import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.FollowTarget;
 import frc.robot.commands.PIDTurn;
 import frc.robot.subsystems.ChassisSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoModes.*;
 
 /**
@@ -29,6 +32,8 @@ import frc.robot.commands.AutoModes.*;
 public class RobotContainer {
   // The robot's subsystems
   private final ChassisSubsystem m_ChassisSubsystem = new ChassisSubsystem();
+  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
 
   // Controller Definitions
   private final XboxController driver = new XboxController(0);
@@ -39,7 +44,10 @@ public class RobotContainer {
   public RobotContainer() {
     // This sets the default command for the chassis subsystem
     m_ChassisSubsystem.setDefaultCommand(
-      new RunCommand(() -> m_ChassisSubsystem.drive(driver.getY(Hand.kLeft), (Constants.turnInversion) * driver.getX(Hand.kLeft)), m_ChassisSubsystem)
+      new RunCommand(() -> {
+        m_ChassisSubsystem.drive(driver.getY(Hand.kLeft), (Constants.turnInversion) * driver.getX(Hand.kLeft));
+        System.out.println("What the hell?");
+      }, m_ChassisSubsystem)
     );
 
     // Configure the button bindings
@@ -57,26 +65,34 @@ public class RobotContainer {
     new JoystickButton(driver, Constants.Control.kRBumper)
       .whenPressed(() -> m_ChassisSubsystem.changeGear());
     new JoystickButton(driver, Constants.Control.kYButton)
-      .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
+      .whenPressed(() -> {
+        System.out.println("YB");
+        double currentAngle = SmartDashboard.getNumber("BallAngle", 0.0);
+        new PIDTurn(currentAngle, m_ChassisSubsystem).withTimeout(15).schedule();
+      }); 
+    //new JoystickButton(driver, Constants.Control.kYButton)
+    //  .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
     new JoystickButton(driver, Constants.Control.kXButton)
-      .whenPressed(() -> m_ChassisSubsystem.GyroReset());
+      .whenPressed(() -> {
+        m_ChassisSubsystem.GyroReset();
+        m_ChassisSubsystem.resetEncoders();
+      }
+      );
     new JoystickButton(driver, Constants.Control.kLBumper)
-      .whenPressed(new DriveDistanceCommand(m_ChassisSubsystem, 100, 0.7).withTimeout(15));
-    new JoystickButton(driver, Constants.Control.kBButton)
-      .whenPressed(() -> m_ChassisSubsystem.resetEncoders());
+      .whileHeld(new RunCommand(() -> m_ChassisSubsystem.drive(-0.6, 0), m_ChassisSubsystem));
+    //new JoystickButton(driver, Constants.Control.kBButton)
+    //  .whenPressed();
 
     new JoystickButton(driver, Constants.Control.kAButton)
       .whenPressed(() -> {
-        Constants.PIDTurn.kTurnP += 0.005;
-        SmartDashboard.putNumber("kP", Constants.PIDTurn.kTurnP);
-      });
-    new JoystickButton(driver, Constants.Control.kBButton)
-      .whenPressed(() -> {
-        Constants.PIDTurn.kTurnP -= 0.005;
-        SmartDashboard.putNumber("kP", Constants.PIDTurn.kTurnP);
+        new DriveDistanceCommand(50, -0.7, m_ChassisSubsystem).schedule();
       });
     new JoystickButton(driver, Constants.Control.kStart)
-      .whenPressed(new FollowTarget(m_ChassisSubsystem, () -> SmartDashboard.getNumber("CentroidOffset", 0)));
+      .whenPressed(new FollowTarget(m_ChassisSubsystem, 
+      () -> SmartDashboard.getNumber("CentroidOffset", 0),
+      () -> SmartDashboard.getNumber("DistanceHeight", 0),
+      250
+      ));
   }
 
   /**
@@ -86,6 +102,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new Auto(m_ChassisSubsystem);
+    return new WaitCommand(2);
   }
 }
