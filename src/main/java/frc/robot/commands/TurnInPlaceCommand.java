@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */
 public class TurnInPlaceCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ChassisSubsystem m_chassisSubsystem;
-  private Spark rightMotor;
-  private Spark leftMotor;
 
+  private final double threshold = 2;
+
+  private final ChassisSubsystem m_chassisSubsystem;
   private double m_speed; 
   private double m_angle;
 
@@ -53,23 +53,13 @@ public class TurnInPlaceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    while (m_chassisSubsystem.GetGyroAngle() != targetAngle) {
-
-        if (m_angle > 0) {
-            m_chassisSubsystem.getRightMotor().set(-m_speed);
-            m_chassisSubsystem.getLeftMotor().set(m_speed);
-        } else if (m_angle < 0) {
-            m_chassisSubsystem.getRightMotor().set(m_speed);
-            m_chassisSubsystem.getLeftMotor().set(-m_speed);
-        }
+    if (m_chassisSubsystem.GetGyroAngle() < targetAngle) {
+      m_chassisSubsystem.drive(0, m_speed);
+    } else {
+      m_chassisSubsystem.drive(0, -m_speed);
     }
         
-    }
-    
-
-  
-
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -82,6 +72,10 @@ public class TurnInPlaceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (m_chassisSubsystem.GetGyroAngle() > targetAngle - threshold && m_chassisSubsystem.GetGyroAngle() < targetAngle + threshold) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
