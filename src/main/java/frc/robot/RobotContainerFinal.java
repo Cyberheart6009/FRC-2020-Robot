@@ -113,7 +113,7 @@ public class RobotContainerFinal {
       }, m_ShooterSubsystem));
     new JoystickButton(operator, Constants.Control.kAButton)
       .whenPressed(() -> {
-        new TurnInPlaceCommand(m_ChassisSubsystem, 0.85, SmartDashboard.getNumber("ShooterTargetAngle", 0.0)).withTimeout(15).schedule();
+        new TurnInPlaceCommand(m_ChassisSubsystem, 0.85, SmartDashboard.getNumber(Constants.SmartDashboardKeys.kShooterTargetAngle, 0.0)).withTimeout(15).schedule();
       });
 
     new JoystickButton(operator, Constants.Control.kYButton)
