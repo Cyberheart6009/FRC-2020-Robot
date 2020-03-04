@@ -64,18 +64,9 @@ public class AutoMiddlePSPS extends SequentialCommandGroup {
         //driving towards where we need to shoot
         new DriveDistanceCommand(94, 1, c_subsystem),
         //aligning with the hole
-        new FollowTarget(c_subsystem, offset),
+        new AutoAlignCommand(c_subsystem),
         //shooting all five balls in capacity, and waiting 0.25 seconds in between each shot
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
+        new Auto5BallShoot(s_subsystem),
         //move back 25 inches to make sure my code isn't broken 
         new DriveDistanceCommand(25, -1, c_subsystem),
         //temp wait command
@@ -90,14 +81,10 @@ public class AutoMiddlePSPS extends SequentialCommandGroup {
         //This is where the ball find command would go
 
         //offset target to go towards where to shoot the ball
-        new FollowTarget(c_subsystem,offset),
+        new AutoAlignCommand(c_subsystem),
 
         //shooting all 3 balls again
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem)
+        new Auto3BallShoot(s_subsystem)
         );
   }
 

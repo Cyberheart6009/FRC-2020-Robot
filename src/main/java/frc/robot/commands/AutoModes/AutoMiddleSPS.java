@@ -51,7 +51,7 @@ public class AutoMiddleSPS extends SequentialCommandGroup {
         //turns towards the hole by turning 270 degrees CW (90 degrees CCW)
         new TurnInPlaceCommand(c_subsystem, 1, 270),
         //aligning with the hole
-        new FollowTarget(c_subsystem, offset),
+        new AutoAlignCommand(c_subsystem),
         //shoots all three balls
         new ShooterCommand(s_subsystem),
         new WaitCommand(0.5),
@@ -77,13 +77,9 @@ public class AutoMiddleSPS extends SequentialCommandGroup {
         //driving the distance towards the shooting area
         new DriveDistanceCommand(Math.sqrt(19252), 1, c_subsystem),
         //offset target to go towards where to shoot the ball
-        new FollowTarget(c_subsystem,offset),
+        new AutoAlignCommand(c_subsystem),
         //shooting all 3 balls again
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem)
+        new Auto3BallShoot(s_subsystem)
         );
   }
 

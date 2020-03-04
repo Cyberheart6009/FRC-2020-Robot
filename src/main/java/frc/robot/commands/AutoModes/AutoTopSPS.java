@@ -44,14 +44,9 @@ public class AutoTopSPS extends SequentialCommandGroup {
         //wait for 0.5 seconds
         new WaitCommand(0.5),
         //aligning with the hole
-        new FollowTarget(c_subsystem, offset),
+        new AutoAlignCommand(c_subsystem),
         //shooting all three balls in capacity, and waiting 0.25 seconds in between each shot
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
+        new Auto3BallShoot(s_subsystem),
         //move back 25 inches to make sure my code isn't broken 
         new DriveDistanceCommand(25, -1, c_subsystem),
         //temp wait command
@@ -70,13 +65,9 @@ public class AutoTopSPS extends SequentialCommandGroup {
         //driving the distance towards the shooting area
         new DriveDistanceCommand(Math.sqrt(19252), 1, c_subsystem),
         //offset target to go towards where to shoot the ball
-        new FollowTarget(c_subsystem,offset),
+        new AutoAlignCommand(c_subsystem),
         //shooting all 3 balls again
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem)
+        new Auto3BallShoot(s_subsystem)
         );
   }
 

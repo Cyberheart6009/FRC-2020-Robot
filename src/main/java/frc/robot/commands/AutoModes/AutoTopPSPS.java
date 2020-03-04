@@ -40,7 +40,15 @@ public class AutoTopPSPS extends SequentialCommandGroup {
         new DriveDistanceCommand(175, 1, c_subsystem),
         //wait for 0.5 seconds
         new WaitCommand(0.5),
-
+        //moving forward to get better results for ball tracking
+        new DriveDistanceCommand(57, 1, c_subsystem),
+        //temp wait command
+        new WaitCommand(0.5),
+        //rotating towards the balls
+        new TurnInPlaceCommand(c_subsystem, 1, 78),
+        //temp wait command
+        new WaitCommand(0.5),
+        
         //this is where the ball tracking would go
 
         //driving the distance in order to safely rotate without running into a pole
@@ -54,18 +62,9 @@ public class AutoTopPSPS extends SequentialCommandGroup {
         //driving towards where we need to shoot
         new DriveDistanceCommand(69, 1, c_subsystem),
         //aligning with the hole
-        new FollowTarget(c_subsystem, offset),
+        new AutoAlignCommand(c_subsystem),
         //shooting all five balls in capacity, and waiting 0.25 seconds in between each shot
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
+        new Auto5BallShoot(s_subsystem),
         //angle required to rotate towards the line of balls (with the colour wheel)
         new TurnInPlaceCommand(c_subsystem, 1, 313),
         //waiting 0.5 seconds
@@ -76,14 +75,10 @@ public class AutoTopPSPS extends SequentialCommandGroup {
         //This is where the ball find command would go
 
         //offset target to go towards where to shoot the ball
-        new FollowTarget(c_subsystem,offset),
+        new AutoAlignCommand(c_subsystem),
 
         //shooting all 3 balls again
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem)
+        new Auto3BallShoot(s_subsystem)
         );
   }
 
