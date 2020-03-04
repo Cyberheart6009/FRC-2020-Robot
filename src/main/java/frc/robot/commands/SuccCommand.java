@@ -19,9 +19,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  */ 
 public class SuccCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final IntakeSubsystem m_intakeSubsystem;
-  
-
+  private Spark m_succMotor;
+  private  final IntakeSubsystem m_intakeSubsystem;
 
   /**
    * Creates a new ExampleCommand.
@@ -30,7 +29,7 @@ public class SuccCommand extends CommandBase {
    */
   public SuccCommand(IntakeSubsystem subsystem) {
     m_intakeSubsystem = subsystem;
-
+    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -40,15 +39,14 @@ public class SuccCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    m_intakeSubsystem.getSuccMotor().set(1);
-    
-}
+    m_intakeSubsystem.setIntake(1);
+  }
     
 
   

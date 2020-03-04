@@ -111,7 +111,7 @@ public class RobotContainerFinal {
         m_ShooterSubsystem.set(1);
       }, m_ShooterSubsystem));
     new JoystickButton(operator, Constants.Control.kAButton)
-      .whenPressed(new PIDTurn(SmartDashboard.getNumber(Constants.SmartDashboardKeys.kShooterTargetAngle, 0), m_ChassisSubsystem).withTimeout(10));
+      .whenPressed(new PIDTurn(SmartDashboard.getNumber(Constants.smartdashboard.kShooterTargetAngle, 0), m_ChassisSubsystem).withTimeout(10));
   }
 
   /**
