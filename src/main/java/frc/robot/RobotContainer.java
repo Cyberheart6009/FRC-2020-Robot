@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.FollowTarget;
 import frc.robot.commands.PIDTurn;
+import frc.robot.commands.TurnInPlaceCommand;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -67,8 +68,8 @@ public class RobotContainer {
     new JoystickButton(driver, Constants.Control.kYButton)
       .whenPressed(() -> {
         System.out.println("YB");
-        double currentAngle = SmartDashboard.getNumber("BallAngle", 0.0);
-        new PIDTurn(currentAngle, m_ChassisSubsystem).withTimeout(15).schedule();
+        double currentAngle = SmartDashboard.getNumber("ShooterTargetAngle", 0.0);
+        new TurnInPlaceCommand(m_ChassisSubsystem, 0.8, currentAngle).withTimeout(15).schedule();
       }); 
     //new JoystickButton(driver, Constants.Control.kYButton)
     //  .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
@@ -85,7 +86,7 @@ public class RobotContainer {
 
     new JoystickButton(driver, Constants.Control.kAButton)
       .whenPressed(() -> {
-        new DriveDistanceCommand(50, -0.7, m_ChassisSubsystem).schedule();
+        new DriveDistanceCommand(50, -0.75, m_ChassisSubsystem).schedule();
       });
     new JoystickButton(driver, Constants.Control.kStart)
       .whenPressed(new FollowTarget(m_ChassisSubsystem, 

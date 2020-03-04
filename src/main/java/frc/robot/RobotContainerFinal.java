@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.FollowTarget;
 import frc.robot.commands.PIDTurn;
+import frc.robot.commands.TurnInPlaceCommand;
 import frc.robot.subsystems.CameraMount;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
@@ -111,7 +112,15 @@ public class RobotContainerFinal {
         m_ShooterSubsystem.set(1);
       }, m_ShooterSubsystem));
     new JoystickButton(operator, Constants.Control.kAButton)
-      .whenPressed(new PIDTurn(SmartDashboard.getNumber(Constants.SmartDashboardKeys.kShooterTargetAngle, 0), m_ChassisSubsystem).withTimeout(10));
+      .whenPressed(() -> {
+        new TurnInPlaceCommand(m_ChassisSubsystem, 0.85, SmartDashboard.getNumber("ShooterTargetAngle", 0.0)).withTimeout(15).schedule();
+      });
+
+    new JoystickButton(operator, Constants.Control.kYButton)
+      .whenPressed(() -> {
+        m_ChassisSubsystem.GyroReset();
+        m_ChassisSubsystem.resetEncoders();
+      });
   }
 
   /**

@@ -19,11 +19,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class TurnInPlaceCommand extends CommandBase {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
 
-  private final double threshold = 2;
+  private final double threshold = 3;
 
   private final ChassisSubsystem m_chassisSubsystem;
-  private double m_speed; 
-  private double m_angle;
+  private double m_speed;
+  private double m_angleTarget;
 
   private double targetAngle;
 
@@ -36,9 +36,8 @@ public class TurnInPlaceCommand extends CommandBase {
    */
   public TurnInPlaceCommand(ChassisSubsystem subsystem, double speed, double angle) {
     m_chassisSubsystem = subsystem;
-    m_angle = angle;
-    targetAngle = m_chassisSubsystem.GetGyroAngle() + m_angle;
     m_speed = speed;
+    m_angleTarget = angle;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
@@ -48,12 +47,14 @@ public class TurnInPlaceCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    targetAngle = m_chassisSubsystem.GetGyroAngle() + m_angleTarget;
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_chassisSubsystem.GetGyroAngle() < targetAngle) {
+    if (m_chassisSubsystem.GetGyroAngle() > targetAngle) {
       m_chassisSubsystem.drive(0, m_speed);
     } else {
       m_chassisSubsystem.drive(0, -m_speed);

@@ -24,11 +24,11 @@ public class PIDTurn extends PIDCommand {
       // Close loop on heading
       chassis::GetGyroAngle,
       // Set reference to target
-      targetAngleDegrees,
+      chassis.GetGyroAngle() + targetAngleDegrees,
       // Pipe output to turn robot
       output -> {
         //SmartDashboard.putNumber("PID Output", output);
-        chassis.sideDrive(output, -output);
+        chassis.drive(0, output);
         System.out.println(System.currentTimeMillis());
       },
       // Require the drive
