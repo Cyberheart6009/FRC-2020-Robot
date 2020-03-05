@@ -35,62 +35,46 @@ public class AutoBottomPSPS extends SequentialCommandGroup {
          * shoots the three balls that the robot is loaded with 
          */
 
-        //moving 175 inches to be in prime positioning for shooting
-        new DriveDistanceCommand(175, 1, c_subsystem),
-        //wait for 0.5 seconds
-        new WaitCommand(0.5),
+         //moving 175 inches to be in prime positioning for shooting
+         new DriveDistanceCommand(150, 1, c_subsystem),
+         //wait for 0.5 seconds
+         new WaitCommand(0.5),
+         //turning around 270 degrees CW (90 degrees CCW)
+         new TurnInPlaceCommand(c_subsystem, 1, 270),
+         //wait for 0.5 seconds
+         new WaitCommand(0.5),
+         //drives towards the hole
+         new DriveDistanceCommand(132, 1, c_subsystem),
+         //temp wait command
+         new WaitCommand(0.5),
+         //turns 90 degrees to prepare for 8 ball pickup.
+         new TurnInPlaceCommand(c_subsystem, 1, 90),
 
-        //rotates towards the blue colour wheel 54.7 degrees CW
-        new TurnInPlaceCommand(c_subsystem, 1, 54.7),
+         //moving forward to get better results for ball tracking
+         new DriveDistanceCommand(57, 1, c_subsystem),
+         //temp wait command
+         new WaitCommand(0.5),
+         //rotating towards the balls
+         new TurnInPlaceCommand(c_subsystem, 1, 78),
         //temp wait command
         new WaitCommand(0.5),
-        //drives towards the colour wheel
-        new DriveDistanceCommand(Math.sqrt(6341), 1, c_subsystem),
-        //temp wait command
-        new WaitCommand(0.5),
-
-        //insert ball finding thing here
-
-        //rotates 270 degrees CW (90 degrees CCW) 
-        new TurnInPlaceCommand(c_subsystem, 1, 270),
-        //temp wait command
-        new WaitCommand(0.5),
-        //drives x distance
-        new DriveDistanceCommand(75, 1, c_subsystem),
-        //temp wait command
-        new WaitCommand(0.5),
-        //rotates to drive the y distance + AutoBottomS distance 90 degrees CW
-        new TurnInPlaceCommand(c_subsystem,1,90),
-        //temo wait command
-        new WaitCommand(0.5),
-        //drives the y distance + autoBottomS distance
-        new DriveDistanceCommand(217, 1, c_subsystem),
-        //temp wait command
-        new WaitCommand(0.5),
-        //turns towards the hole by turning 270 degrees CW (90 degrees CCW)
-        new TurnInPlaceCommand(c_subsystem, 1, 270),
-        //temp wait command
-        new WaitCommand(0.5),
-        //driving forward 25 inches to shoot better
-        new DriveDistanceCommand(25, 1, c_subsystem),
-        //temp wait command
-        new WaitCommand(0.5),
-        //aligning with the hole
-        new FollowTarget(c_subsystem, offset),
-        //shoots all three balls
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5),
-
-        //the rest is from AutoTopSPS
         
-        //move back 25 inches to make sure my code isn't broken 
-        new DriveDistanceCommand(25, -1, c_subsystem),
+         //this is where the ball tracking would go
+
+        //driving the distance in order to safely rotate without running into a pole
+        new DriveDistanceCommand(Math.sqrt(481), 1, c_subsystem),
+        //temporary wait command
+        new WaitCommand(0.5),
+        //rotating towards the ship
+        new TurnInPlaceCommand(c_subsystem, 1, 336),
         //temp wait command
         new WaitCommand(0.5),
+        //driving towards where we need to shoot
+        new DriveDistanceCommand(69, 1, c_subsystem),
+        //aligning with the hole
+        new AutoAlignCommand(c_subsystem),
+        //shooting all five balls in capacity, and waiting 0.25 seconds in between each shot
+        new Auto5BallShoot(s_subsystem),
         //angle required to rotate towards the line of balls (with the colour wheel)
         new TurnInPlaceCommand(c_subsystem, 1, 313),
         //waiting 0.5 seconds
@@ -100,18 +84,11 @@ public class AutoBottomPSPS extends SequentialCommandGroup {
         
         //This is where the ball find command would go
 
-        //turning in place towards where to shoot (setting up for the follow target command)
-        new TurnInPlaceCommand(c_subsystem, 1, 345),
-        //driving the distance towards the shooting area
-        new DriveDistanceCommand(Math.sqrt(19252), 1,c_subsystem),
         //offset target to go towards where to shoot the ball
-        new FollowTarget(c_subsystem,offset),
+        new AutoAlignCommand(c_subsystem),
+
         //shooting all 3 balls again
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.25),
-        new ShooterCommand(s_subsystem)
+        new Auto3BallShoot(s_subsystem)
         );
   }
 

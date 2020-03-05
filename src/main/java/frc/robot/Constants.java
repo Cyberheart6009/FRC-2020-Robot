@@ -86,5 +86,6 @@ public class Constants {
 
     public static final class SmartDashboardKeys {
         public static final String kShooterTargetAngle = "ShooterTargetAngle";
+        public static final String kShooterDistance = "ShooterDistance";    
     }
 }

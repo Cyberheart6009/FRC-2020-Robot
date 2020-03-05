@@ -2,9 +2,12 @@ package frc.robot.commands.AutoModes;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.commands.*;
 import frc.robot.subsystems.*;
 
@@ -41,15 +44,11 @@ public class AutoTopS extends SequentialCommandGroup {
         new TurnInPlaceCommand(c_subsystem, 1, 180),
         //wait for 0.5 seconds
         new WaitCommand(0.5),
+
         //aligning with the hole
-        new FollowTarget(c_subsystem, offset),
+        new AutoAlignCommand(c_subsystem),
         //shoots all three balls
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5)
+        new Auto3BallShoot(s_subsystem)
         );
   }
 

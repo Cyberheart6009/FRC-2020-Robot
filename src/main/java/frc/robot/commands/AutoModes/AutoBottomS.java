@@ -12,7 +12,7 @@ import frc.robot.subsystems.*;
  * A complex auto command that drives forward, releases a hatch, and then drives
  * backward.
  */
-public class AutoMiddleS extends SequentialCommandGroup {
+public class AutoBottomS extends SequentialCommandGroup {
   /**
    * Creates a new ComplexAuto.
    *
@@ -23,7 +23,7 @@ public class AutoMiddleS extends SequentialCommandGroup {
   public ShooterSubsystem s_subsystem;
   public IntakeSubsystem i_subsystem;
 
-  public AutoMiddleS(ChassisSubsystem chassis_subsystem, ShooterSubsystem shooter_subsystem, IntakeSubsystem intake_subsystem) {
+  public AutoBottomS(ChassisSubsystem chassis_subsystem, ShooterSubsystem shooter_subsystem, IntakeSubsystem intake_subsystem) {
       c_subsystem = chassis_subsystem;
       s_subsystem = shooter_subsystem;
       i_subsystem = intake_subsystem;
@@ -47,17 +47,14 @@ public class AutoMiddleS extends SequentialCommandGroup {
         new DriveDistanceCommand(132, 1, c_subsystem),
         //temp wait command
         new WaitCommand(0.5),
-        //turns towards the hole by turning 270 degrees CW (90 degrees CCW)
+        //turns 270 degrees
         new TurnInPlaceCommand(c_subsystem, 1, 270),
+        //temp wait command
+        new WaitCommand(0.5),
         //aligning with the hole
-        new FollowTarget(c_subsystem, offset),
+        new AutoAlignCommand(c_subsystem),
         //shoots all three balls
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5)
+        new Auto3BallShoot(s_subsystem)
         );
   }
 

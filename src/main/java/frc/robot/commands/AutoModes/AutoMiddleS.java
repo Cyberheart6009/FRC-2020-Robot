@@ -50,14 +50,9 @@ public class AutoMiddleS extends SequentialCommandGroup {
         //turns towards the hole by turning 270 degrees CW (90 degrees CCW)
         new TurnInPlaceCommand(c_subsystem, 1, 270),
         //aligning with the hole
-        new FollowTarget(c_subsystem, offset),
+        new AutoAlignCommand(c_subsystem),
         //shoots all three balls
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5),
-        new ShooterCommand(s_subsystem),
-        new WaitCommand(0.5)
+        new Auto3BallShoot(s_subsystem)
         );
   }
 
