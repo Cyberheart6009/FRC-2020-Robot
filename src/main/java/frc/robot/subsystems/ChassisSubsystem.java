@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Constants;
+import frc.robot.util.RPMMonitor;
 
 import java.util.ArrayList;
 
@@ -39,11 +40,11 @@ public class ChassisSubsystem extends SubsystemBase {
   private final NetworkTableInstance instance;
   private final NetworkTable table;
 
-  AHRS gyro;
-
-  SimpleMotorFeedforward turnFeedForward;
+  private final AHRS gyro;
 
   private final DifferentialDrive driveBase;
+
+  private final RPMMonitor rpm = new RPMMonitor();
 
   /**
    * Creates a new ExampleSubsystem.
@@ -78,8 +79,6 @@ public class ChassisSubsystem extends SubsystemBase {
 
     // Sets the Gyro Port
     gyro = new AHRS(SPI.Port.kMXP);
-
-    turnFeedForward = new SimpleMotorFeedforward(12, 12*4.3/1164.69);
 
     driveBase.setMaxOutput(1);
   }
@@ -131,17 +130,29 @@ public class ChassisSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-   // This method will be called once per scheduler run
-   SmartDashboard.putNumber("Roll", gyro.getRoll());
-   SmartDashboard.putNumber("Yaw", gyro.getYaw());
-   SmartDashboard.putNumber("Pitch", gyro.getPitch());
-   SmartDashboard.putNumber("Angle", gyro.getAngle());
-   SmartDashboard.putNumber("X", gyro.getRawGyroX());
-   SmartDashboard.putNumber("Distance 2", getDistance());
-   SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
-   SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
+    rpm.monitor(averageEncoders());
+
+    /*
+    if (getRotationsPerMinute() > 1000) {
+      gearUp();
+    } else if (getRotationsPerMinute() < 1000) {
+      gearDown();
+    }*/
+
+    // Puts a Number of variables to SmartDashboard
+    SmartDashboard.putNumber("Roll", gyro.getRoll());
+    SmartDashboard.putNumber("Yaw", gyro.getYaw());
+    SmartDashboard.putNumber("Pitch", gyro.getPitch());
+    SmartDashboard.putNumber("Angle", gyro.getAngle());
+    SmartDashboard.putNumber("X", gyro.getRawGyroX());
+    SmartDashboard.putNumber("Distance 2", getDistance());
+    SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
+    SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
   }
 
+  public double averageEncoders() {
+    return (leftEncoder.get() + rightEncoder.get()) / 2;
+  }
 
   public double getDistance(){
     double distance = (leftEncoder.get() + rightEncoder.get()) / (Constants.EncoderPorts.ENCODER_COUNTS_PER_INCH * 2);
@@ -154,10 +165,7 @@ public class ChassisSubsystem extends SubsystemBase {
     rightEncoder.reset();
   }
 
-  public ArrayList<Integer> getValue() {
-    ArrayList<Integer> encoderDistances = new ArrayList<Integer>();
-    encoderDistances.add(leftEncoder.get());
-    encoderDistances.add(rightEncoder.get());
-    return encoderDistances;
+  public double getRotationsPerMinute() {
+    return rpm.getRotationsPerMinute();
   }
 }
