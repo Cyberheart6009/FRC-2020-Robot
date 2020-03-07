@@ -29,6 +29,10 @@ public class DriveDistanceCommand extends CommandBase {
 
   private boolean hitEnd = false;
 
+  private double currentYaw;
+  private double newYaw;
+
+
 
   /**
    * Creates a new ExampleCommand.
@@ -72,7 +76,11 @@ public class DriveDistanceCommand extends CommandBase {
     }
     */
     if (m_chassisSubsystem.getDistance() - startDistance < m_distance) {
-      m_chassisSubsystem.drive(m_speed, 0);
+      currentYaw = m_chassisSubsystem.getGyroYaw();
+      
+      newYaw = -(startYaw - currentYaw) / 12;
+      SmartDashboard.putNumber("Difference", newYaw);
+      m_chassisSubsystem.drive(m_speed, newYaw);
     }
   }
 

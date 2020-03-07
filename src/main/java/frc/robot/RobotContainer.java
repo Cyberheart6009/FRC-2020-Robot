@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import org.ejml.dense.row.decomposition.eig.watched.WatchedDoubleStepQREigenvalue_DDRM;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
@@ -14,13 +16,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.FollowTarget;
 import frc.robot.commands.PIDTurn;
+import frc.robot.commands.SuccCommand;
 import frc.robot.commands.TurnInPlaceCommand;
 import frc.robot.subsystems.ChassisSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoModes.*;
 
@@ -51,6 +56,11 @@ public class RobotContainer {
       }, m_ChassisSubsystem)
     );
 
+
+    m_IntakeSubsystem.setDefaultCommand(new RunCommand(() -> {
+      m_IntakeSubsystem.stopIntake();
+    }, m_IntakeSubsystem));
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -68,8 +78,14 @@ public class RobotContainer {
     new JoystickButton(driver, Constants.Control.kYButton)
       .whenPressed(() -> {
         System.out.println("YB");
-        double currentAngle = SmartDashboard.getNumber("ShooterTargetAngle", 0.0);
-        new TurnInPlaceCommand(m_ChassisSubsystem, 0.8, currentAngle).withTimeout(15).schedule();
+        //double currentAngle = SmartDashboard.getNumber("ShooterTargetAngle", 0.0);
+        double currentAngle = SmartDashboard.getNumber("BallAngle", 0.0);
+        new SequentialCommandGroup(
+          new TurnInPlaceCommand(m_ChassisSubsystem, 0.7, -currentAngle),
+          new WaitCommand(1),
+          new ParallelCommandGroup(new DriveDistanceCommand(100, 1, m_ChassisSubsystem), 
+          new SuccCommand(m_IntakeSubsystem))).schedule();
+          
       }); 
     //new JoystickButton(driver, Constants.Control.kYButton)
     //  .whenPressed(() -> new PIDTurn(90.0, m_ChassisSubsystem).withTimeout(15).schedule()); 
