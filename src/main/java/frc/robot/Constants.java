@@ -21,7 +21,8 @@ public class Constants {
     public static final class PWMPorts{
         
         //all 0 because i do not know the correct motor ports.
-        public static final int[] kLeftMotors = {0, 1};
+        public static final int[] kLeftMotors = {1};
+        public static final int kColourWheelMotor = 0;
         public static final int[] kRightMotors = {2, 3};
 
         public static final int kShootMotor1 = 6;
@@ -82,6 +83,8 @@ public class Constants {
         public static final int kStart = 8;
         public static final int kLeftThumbPush = 9;
         public static final int kRightThumbPush = 10;
+
+        public static boolean kManualOverride = false;
     }
 
     public static final class SmartDashboardKeys {

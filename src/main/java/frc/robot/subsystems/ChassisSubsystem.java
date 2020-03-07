@@ -28,7 +28,10 @@ import frc.robot.util.RPMMonitor;
 import java.util.ArrayList;
 
 public class ChassisSubsystem extends SubsystemBase {
+  private enum GearState {GEAR_HIGH, GEAR_LOW}
 
+
+  private GearState gearState = GearState.GEAR_LOW; 
   private final SpeedControllerGroup leftMotors, rightMotors;
 
   private final Compressor compressor;
@@ -46,23 +49,30 @@ public class ChassisSubsystem extends SubsystemBase {
 
   private final RPMMonitor rpm = new RPMMonitor();
 
+  private final double maxLow = 0;
+  private final double minHigh = 0;
+  private double autoShiftTimer = 0;
+
   /**
    * Creates a new ExampleSubsystem.
    */ 
-
   public ChassisSubsystem() {
     // Preparing Network Tables
     instance = NetworkTableInstance.getDefault();
     table = instance.getTable("SmartDashboard");
 
     // Sets sparks to Speed Controller
-    if (Constants.PWMPorts.kLeftMotors.length == 2 || Constants.PWMPorts.kRightMotors.length == 2) {
+    if (Constants.PWMPorts.kLeftMotors.length == 2) {
       // Sets sparks if 2-per-side
       leftMotors = new SpeedControllerGroup(new Spark(Constants.PWMPorts.kLeftMotors[0]), new Spark(Constants.PWMPorts.kLeftMotors[1]));
-      rightMotors = new SpeedControllerGroup(new Spark(Constants.PWMPorts.kRightMotors[0]), new Spark(Constants.PWMPorts.kRightMotors[1]));
     } else {
       // Sets Sparks if 1-per-Side
       leftMotors = new SpeedControllerGroup(new Spark(Constants.PWMPorts.kLeftMotors[0]));
+    }
+
+    if (Constants.PWMPorts.kRightMotors.length == 2) {
+      rightMotors = new SpeedControllerGroup(new Spark(Constants.PWMPorts.kRightMotors[0]), new Spark(Constants.PWMPorts.kRightMotors[1]));
+    } else {
       rightMotors = new SpeedControllerGroup(new Spark(Constants.PWMPorts.kRightMotors[0]));
     }
 
@@ -105,21 +115,23 @@ public class ChassisSubsystem extends SubsystemBase {
   }
 
   public void changeGear() {
-    if (shifter.get() == Value.kForward) {
-      shifter.set(Value.kReverse);
+    if (shifter.get() != Value.kReverse) {
+      gearDown();
     } else {
-      shifter.set(Value.kForward);
+      gearUp();
     }
   }
 
   public void gearUp() {
     if (shifter.get() != Value.kForward) {
+      gearState = GearState.GEAR_HIGH;
       shifter.set(Value.kForward);
     }
   }
 
   public void gearDown() {
     if (shifter.get() != Value.kReverse) {
+      gearState = GearState.GEAR_LOW;
       shifter.set(Value.kReverse);
     }
   }
@@ -131,23 +143,34 @@ public class ChassisSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     rpm.monitor(averageEncoders());
-
-    /*
-    if (getRotationsPerMinute() > 1000) {
-      gearUp();
-    } else if (getRotationsPerMinute() < 1000) {
-      gearDown();
-    }*/
+    
+    if (Constants.Control.kManualOverride) {
+      if (gearState == GearState.GEAR_LOW){
+        if (getRotationsPerMinute() > maxLow - 100) {
+          if (System.currentTimeMillis() - autoShiftTimer > 5000 ) {
+            gearUp();
+            autoShiftTimer = System.currentTimeMillis();
+          }
+        } else {
+          autoShiftTimer = System.currentTimeMillis();
+        }
+      } else {
+        if (getRotationsPerMinute() < minHigh + 100) {
+          if (System.currentTimeMillis() - autoShiftTimer > 5000 ) {
+            gearUp();
+            autoShiftTimer = System.currentTimeMillis();
+          }
+        } else {
+          autoShiftTimer = System.currentTimeMillis();
+        }
+      }
+    }
 
     // Puts a Number of variables to SmartDashboard
-    SmartDashboard.putNumber("Roll", gyro.getRoll());
-    SmartDashboard.putNumber("Yaw", gyro.getYaw());
-    SmartDashboard.putNumber("Pitch", gyro.getPitch());
-    SmartDashboard.putNumber("Angle", gyro.getAngle());
-    SmartDashboard.putNumber("X", gyro.getRawGyroX());
-    SmartDashboard.putNumber("Distance 2", getDistance());
+    SmartDashboard.putNumber("Gyro", gyro.getAngle());
     SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
     SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
+    SmartDashboard.putNumber("Chassis RPM", getRotationsPerMinute());
   }
 
   public double averageEncoders() {
@@ -156,7 +179,6 @@ public class ChassisSubsystem extends SubsystemBase {
 
   public double getDistance(){
     double distance = (leftEncoder.get() + rightEncoder.get()) / (Constants.EncoderPorts.ENCODER_COUNTS_PER_INCH * 2);
-    SmartDashboard.putNumber("Distance", distance);
     return (distance);
   }
 
