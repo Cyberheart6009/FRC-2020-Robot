@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * A complex auto command that drives forward, releases a hatch, and then drives
  * backward.
  */
-public class AutoRouteTwo extends SequentialCommandGroup {
+public class AutoRouteThree extends SequentialCommandGroup {
   /**
    * Creates a new ComplexAuto.
    *
@@ -25,7 +25,7 @@ public class AutoRouteTwo extends SequentialCommandGroup {
   public ShooterSubsystem s_subsystem;
   public IntakeSubsystem i_subsystem;
 
-  public AutoRouteTwo(ChassisSubsystem chassis_subsystem, ShooterSubsystem shooter_subsystem, IntakeSubsystem intake_subsystem) {
+  public AutoRouteThree(ChassisSubsystem chassis_subsystem, ShooterSubsystem shooter_subsystem, IntakeSubsystem intake_subsystem) {
       c_subsystem = chassis_subsystem;
       s_subsystem = shooter_subsystem;
       i_subsystem = intake_subsystem;
