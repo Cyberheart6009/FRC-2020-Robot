@@ -41,19 +41,19 @@ public class AutoRouteThree extends SequentialCommandGroup {
         new SequentialCommandGroup(           
           new TurnInPlaceCommand(c_subsystem, 0.7, -SmartDashboard.getNumber("BallAngle", 0.0)),
           new WaitCommand(1),
-          new ParallelCommandGroup(new DriveDistanceCommand(SmartDashboard.getNumber("BallDistance", 0.0), 1, c_subsystem), 
+          new ParallelCommandGroup(new DriveDistanceCommand(-SmartDashboard.getNumber("BallDistance", 0.0), 1, c_subsystem), 
           new SuccCommand(i_subsystem))
         ),
         new SequentialCommandGroup(           
           new TurnInPlaceCommand(c_subsystem, 0.7, -SmartDashboard.getNumber("BallAngle", 0.0)),
           new WaitCommand(1),
-          new ParallelCommandGroup(new DriveDistanceCommand(SmartDashboard.getNumber("BallDistance", 0.0), 1, c_subsystem), 
+          new ParallelCommandGroup(new DriveDistanceCommand(-SmartDashboard.getNumber("BallDistance", 0.0), 1, c_subsystem), 
           new SuccCommand(i_subsystem))
         ),
         new SequentialCommandGroup(           
           new TurnInPlaceCommand(c_subsystem, 0.7, -SmartDashboard.getNumber("BallAngle", 0.0)),
           new WaitCommand(1),
-          new ParallelCommandGroup(new DriveDistanceCommand(SmartDashboard.getNumber("BallDistance", 0.0), 1, c_subsystem), 
+          new ParallelCommandGroup(new DriveDistanceCommand(-SmartDashboard.getNumber("BallDistance", 0.0), 1, c_subsystem), 
           new SuccCommand(i_subsystem))
         )
 
