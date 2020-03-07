@@ -14,13 +14,12 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.util.RPMMonitor;
 
 public class ShooterSubsystem extends SubsystemBase {
   private final SpeedControllerGroup shooterGroup;
   private final Encoder shooterEncoder;
-  private double rpm = 0;
-  private double previousEncoderCount = 0;
-  private double previousEncoderTime = 0;
+  private final RPMMonitor rpm = new RPMMonitor();
 
   public ShooterSubsystem() {
       Spark shooterOne = new Spark(Constants.PWMPorts.kShootMotor1);
@@ -41,19 +40,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // RPM Calculations
-    double currentEncoderTime = System.currentTimeMillis();
-    double currentEncoderCount = shooterEncoder.getDistance();
-    double rps = (currentEncoderCount - previousEncoderCount) / (currentEncoderTime - previousEncoderTime);
-    rpm = rps * 60;
-
-    previousEncoderCount = currentEncoderCount;
-    previousEncoderTime = currentEncoderTime;
-
+    rpm.monitor(shooterEncoder.getDistance());
     SmartDashboard.putNumber("Shooter RPM", getRotationsPerMinute());
   }
 
   public double getRotationsPerMinute() {
-    return rpm;
+    return rpm.getRotationsPerMinute();
   }
 }
