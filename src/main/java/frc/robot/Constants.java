@@ -21,8 +21,9 @@ public class Constants {
     public static final class PWMPorts{
         
         //all 0 because i do not know the correct motor ports.
+        public static final int kClimberServo = 0;
+        public static final int kColourWheelMotor = 19;
         public static final int[] kLeftMotors = {1};
-        public static final int kColourWheelMotor = 0;
         public static final int[] kRightMotors = {2, 3};
 
         public static final int kShootMotor1 = 6;
@@ -41,7 +42,8 @@ public class Constants {
         public static final int kShooterEncoderA = 4;
         public static final int kShooterEncoderB = 5;
 
-        public static final double ENCODER_COUNTS_PER_INCH = 3737/267.5;
+        //public static final double ENCODER_COUNTS_PER_INCH = 3737/267.5;
+        public static final double ENCODER_COUNTS_PER_INCH = 3173/200;//2050/130;
         public static final double kRotationConverter = 1;
     }
 

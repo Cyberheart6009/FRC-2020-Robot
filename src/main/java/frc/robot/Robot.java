@@ -21,8 +21,6 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
-  private RobotTestingContainer m_robotTestingContainer;
-  private RobotContainerFinal m_robtoContainerFinal;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -32,13 +30,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    if (true) {
-      m_robotContainer = new RobotContainer();
-    } else if (false) {
-      m_robotTestingContainer = new RobotTestingContainer();
-    } else {
-      m_robtoContainerFinal = new RobotContainerFinal();
-    }
+  m_robotContainer = new RobotContainer();
     
   }
 
@@ -98,6 +90,8 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    m_robotContainer.teleopInit();
   }
 
   /**

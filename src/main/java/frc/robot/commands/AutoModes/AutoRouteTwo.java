@@ -1,8 +1,7 @@
 package frc.robot.commands.AutoModes;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.*;
@@ -23,37 +22,44 @@ public class AutoRouteTwo extends SequentialCommandGroup {
    */
   public ChassisSubsystem c_subsystem;
   public ShooterSubsystem s_subsystem;
+  public ShooterFeederSubsystem sf_subsystem;
   public IntakeSubsystem i_subsystem;
 
-  public AutoRouteTwo(ChassisSubsystem chassis_subsystem, ShooterSubsystem shooter_subsystem, IntakeSubsystem intake_subsystem) {
+  public AutoRouteTwo(ChassisSubsystem chassis_subsystem, ShooterSubsystem shooter_subsystem, ShooterFeederSubsystem shooterFeederSubsystem, IntakeSubsystem intake_subsystem) {
       c_subsystem = chassis_subsystem;
       s_subsystem = shooter_subsystem;
       i_subsystem = intake_subsystem;
+      sf_subsystem = shooterFeederSubsystem;
       //double currentAngle = SmartDashboard.getNumber("BallAngle", 0.0);
       //double distance = SmartDashboard.getNumber("BallDistance", 0.0);
     //placeholder because we do not have the value.    
 	addCommands(
         //Commands are in order based on the diagram 
         //Starts at top of arena, shoots balls, then drives directly backwards to pick up balls
-        new ShooterCommand(s_subsystem),
-        new TurnInPlaceCommand(c_subsystem, 1, -40),
-        new BallTrackerCommand(c_subsystem, i_subsystem, 3),        
+        new AlignAndShoot(c_subsystem, s_subsystem, sf_subsystem).withTimeout(6),
+        new PrintCommand("Starting DriveDistance"),
+        new DriveDistanceCommand(48, 0.8, c_subsystem),        
+        
+        
+        new TurnInPlaceCommand(c_subsystem, 0.85, -20),
+        new SequentialCommandGroup(
+          new PrintCommand("Starting First Ball Track"),
+          new TurnInPlaceCommand(c_subsystem, 0.7, -SmartDashboard.getNumber("BallAngle", 0.0)),
+          new WaitCommand(1),
+          new ParallelCommandGroup(new DriveDistanceCommand(100, 0.8, c_subsystem), 
+          new SuccCommand(i_subsystem)),
+          new PrintCommand("Ending First Ball Track")
+        ),
         new SequentialCommandGroup(           
           new TurnInPlaceCommand(c_subsystem, 0.7, -SmartDashboard.getNumber("BallAngle", 0.0)),
           new WaitCommand(1),
-          new ParallelCommandGroup(new DriveDistanceCommand(-SmartDashboard.getNumber("BallDistance", 0.0), 1, c_subsystem), 
+          new ParallelCommandGroup(new DriveDistanceCommand(40, 0.8, c_subsystem), 
           new SuccCommand(i_subsystem))
         ),
         new SequentialCommandGroup(           
           new TurnInPlaceCommand(c_subsystem, 0.7, -SmartDashboard.getNumber("BallAngle", 0.0)),
           new WaitCommand(1),
-          new ParallelCommandGroup(new DriveDistanceCommand(-SmartDashboard.getNumber("BallDistance", 0.0), 1, c_subsystem), 
-          new SuccCommand(i_subsystem))
-        ),
-        new SequentialCommandGroup(           
-          new TurnInPlaceCommand(c_subsystem, 0.7, -SmartDashboard.getNumber("BallAngle", 0.0)),
-          new WaitCommand(1),
-          new ParallelCommandGroup(new DriveDistanceCommand(-SmartDashboard.getNumber("BallDistance", 0.0), 1, c_subsystem), 
+          new ParallelCommandGroup(new DriveDistanceCommand(40, 0.8, c_subsystem), 
           new SuccCommand(i_subsystem))
         )        
     );

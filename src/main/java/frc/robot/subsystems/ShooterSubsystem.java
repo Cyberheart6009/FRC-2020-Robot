@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,7 +18,7 @@ import frc.robot.util.RPMMonitor;
 public class ShooterSubsystem extends SubsystemBase {
   private final SpeedControllerGroup shooterGroup;
   private final Encoder shooterEncoder;
-  private final RPMMonitor rpm = new RPMMonitor();
+  private final RPMMonitor rpm = new RPMMonitor(256);
 
   public ShooterSubsystem() {
       Spark shooterOne = new Spark(Constants.PWMPorts.kShootMotor1);
@@ -40,8 +39,15 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    rpm.monitor(shooterEncoder.getDistance());
+    rpm.monitor(shooterEncoder.get());
     SmartDashboard.putNumber("Shooter RPM", getRotationsPerMinute());
+    SmartDashboard.putNumber("Shooter Get", shooterEncoder.getRate());
+
+    if (Math.abs(SmartDashboard.getNumber("ShooterTargetAngle", 0.0)) < 2) {
+      SmartDashboard.putBoolean("Should You Shoot?", true);
+    } else {
+      SmartDashboard.putBoolean("Should You Shoot?", false);
+    }
   }
 
   public double getRotationsPerMinute() {

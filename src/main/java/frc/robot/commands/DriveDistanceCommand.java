@@ -75,7 +75,7 @@ public class DriveDistanceCommand extends CommandBase {
       finished = true;
     }
     */
-    if (m_chassisSubsystem.getDistance() - startDistance < m_distance) {
+    if (Math.abs(m_chassisSubsystem.getDistance() - startDistance) < Math.abs(m_distance)) {
       currentYaw = m_chassisSubsystem.getGyroYaw();
       
       newYaw = -(startYaw - currentYaw) / 12;

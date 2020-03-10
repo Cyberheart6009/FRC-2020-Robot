@@ -11,7 +11,6 @@ import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ChassisSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 
 public class FollowTarget extends CommandBase {
   private final ChassisSubsystem m_ChassisSubsystem;

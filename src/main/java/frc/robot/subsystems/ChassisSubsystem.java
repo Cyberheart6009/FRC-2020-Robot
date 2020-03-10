@@ -20,18 +20,15 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.SPI;
 import frc.robot.Constants;
 import frc.robot.util.RPMMonitor;
 
-import java.util.ArrayList;
-
 public class ChassisSubsystem extends SubsystemBase {
-  private enum GearState {GEAR_HIGH, GEAR_LOW}
+  public static enum GearState {GEAR_HIGH, GEAR_LOW}
 
-
-  private GearState gearState = GearState.GEAR_LOW; 
+  public GearState gearState = GearState.GEAR_LOW; 
+  
   private final SpeedControllerGroup leftMotors, rightMotors;
 
   private final Compressor compressor;
@@ -47,7 +44,7 @@ public class ChassisSubsystem extends SubsystemBase {
 
   private final DifferentialDrive driveBase;
 
-  private final RPMMonitor rpm = new RPMMonitor();
+  private final RPMMonitor rpm = new RPMMonitor(360);
 
   private final double maxLow = 0;
   private final double minHigh = 0;
@@ -91,12 +88,14 @@ public class ChassisSubsystem extends SubsystemBase {
     gyro = new AHRS(SPI.Port.kMXP);
 
     driveBase.setMaxOutput(1);
+
+    gearDown();
   }
 
   public void drive(double speed, double angle) {
     //k_speed = speed;
     //k_angle = angle;
-    driveBase.arcadeDrive(speed, angle);
+    driveBase.arcadeDrive(-speed, angle);
     System.out.println(angle);
   }
 
@@ -126,6 +125,7 @@ public class ChassisSubsystem extends SubsystemBase {
     if (shifter.get() != Value.kForward) {
       gearState = GearState.GEAR_HIGH;
       shifter.set(Value.kForward);
+      SmartDashboard.putBoolean("ShiftUp", true);
     }
   }
 
@@ -133,6 +133,15 @@ public class ChassisSubsystem extends SubsystemBase {
     if (shifter.get() != Value.kReverse) {
       gearState = GearState.GEAR_LOW;
       shifter.set(Value.kReverse);
+      SmartDashboard.putBoolean("ShiftUp", false);
+    }
+  }
+
+  public void setGear(GearState state) {
+    if (state == GearState.GEAR_HIGH) {
+      gearUp();
+    } else {
+      gearDown();
     }
   }
 
@@ -171,6 +180,9 @@ public class ChassisSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Left Encoder", leftEncoder.get());
     SmartDashboard.putNumber("Right Encoder", rightEncoder.get());
     SmartDashboard.putNumber("Chassis RPM", getRotationsPerMinute());
+    SmartDashboard.putNumber("Right Out", rightMotors.get());
+    SmartDashboard.putNumber("Left Out", leftMotors.get());
+    SmartDashboard.putNumberArray("ChassisDisplacement", new double[]{gyro.getDisplacementX() * 39.37, gyro.getDisplacementY() * 39.37});
   }
 
   public double averageEncoders() {

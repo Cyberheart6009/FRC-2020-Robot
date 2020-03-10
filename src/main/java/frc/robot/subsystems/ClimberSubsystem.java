@@ -7,30 +7,42 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 
 
 public class ClimberSubsystem extends SubsystemBase {
+  public static enum LockState {LOCKED, UNLOCKED};
+  
   /**
    * Creates a new subsystem.
    */
 
   private final Spark climber;
+  private final Servo lockServo;
 
   public ClimberSubsystem() {
       climber = new Spark(Constants.PWMPorts.kClimberMotor);
+      lockServo = new Servo(Constants.PWMPorts.kClimberServo);
+      lock();
   }
 
   public void climb(double speed ) {
     climber.set(speed);
+  }
+
+  @Override
+  public void periodic() {
+  }
+
+  public void lock() {
+    lockServo.setAngle(140*0.666666);
+  }
+
+  public void unlock() {
+    lockServo.setAngle(0);
   }
 }
  

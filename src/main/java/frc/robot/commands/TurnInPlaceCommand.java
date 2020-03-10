@@ -8,9 +8,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.ChassisSubsystem;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.ChassisSubsystem.GearState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /**
@@ -22,6 +20,7 @@ public class TurnInPlaceCommand extends CommandBase {
   private final double threshold = 3;
 
   private final ChassisSubsystem m_chassisSubsystem;
+  private GearState startGear;
   private double m_speed;
   private double m_angleTarget;
 
@@ -48,7 +47,8 @@ public class TurnInPlaceCommand extends CommandBase {
   @Override
   public void initialize() {
     targetAngle = m_chassisSubsystem.GetGyroAngle() + m_angleTarget;
-
+    startGear = m_chassisSubsystem.gearState;
+    m_chassisSubsystem.gearDown();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -66,6 +66,7 @@ public class TurnInPlaceCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     System.out.println("ended");
+    m_chassisSubsystem.setGear(startGear);
   }
 
 
