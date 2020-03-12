@@ -64,20 +64,20 @@ public class BallTrackerCommand extends CommandBase {
 
     // turn to ball
     if (m_facingBall == false) {
-      if (m_chassisSubsystem.GetGyroAngle() > m_chassisSubsystem.GetGyroAngle() + m_ballAngle) {
+      if (m_chassisSubsystem.gyroAngle() > m_chassisSubsystem.gyroAngle() + m_ballAngle) {
         m_chassisSubsystem.drive(0, -0.8);
-    } else if (m_chassisSubsystem.GetGyroAngle() < m_chassisSubsystem.GetGyroAngle() + m_ballAngle) {
+    } else if (m_chassisSubsystem.gyroAngle() < m_chassisSubsystem.gyroAngle() + m_ballAngle) {
         m_chassisSubsystem.drive(0, 0.8);
     } else {
         m_facingBall = true;
-        startYaw = m_chassisSubsystem.getGyroYaw();
+        startYaw = m_chassisSubsystem.gyroYaw();
       }
     }
 
     // Drive to ball
     if (m_facingBall == true) {
       if (m_chassisSubsystem.getDistance() < m_ballDistance + 20) {
-        currentYaw = m_chassisSubsystem.getGyroYaw();
+        currentYaw = m_chassisSubsystem.gyroYaw();
         newYaw = -(startYaw - currentYaw) / 12;
         m_chassisSubsystem.drive(1, 0);
         m_intakeSubsystem.setIntake(1);

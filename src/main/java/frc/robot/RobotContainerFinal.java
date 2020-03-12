@@ -125,8 +125,8 @@ public class RobotContainerFinal {
 
     new JoystickButton(operator, Constants.Control.kYButton)
       .whenPressed(() -> {
-        m_ChassisSubsystem.GyroReset();
-        m_ChassisSubsystem.resetEncoders();
+        m_ChassisSubsystem.gyroReset();
+        m_ChassisSubsystem.encoderReset();
       });
 
     // Colour Wheel Control

@@ -8,6 +8,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -34,6 +35,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
  * (including subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private final PowerDistributionPanel pdp = new PowerDistributionPanel();
+
   // The robot's subsystems
   private final ChassisSubsystem m_ChassisSubsystem = new ChassisSubsystem();
   private final IntakeSubsystem m_IntakeSubsystem = new IntakeSubsystem();
@@ -65,7 +68,7 @@ public class RobotContainer {
 
     // The Drive Command
     m_ChassisSubsystem.setDefaultCommand(new RunCommand(()-> 
-      m_ChassisSubsystem.drive(driver.getY(Hand.kLeft), -driver.getX(Hand.kLeft)), 
+      m_ChassisSubsystem.drive(driver.getY(Hand.kLeft), driver.getX(Hand.kLeft)), 
       m_ChassisSubsystem));
 
     // Intake Motor Command
@@ -136,8 +139,8 @@ public class RobotContainer {
 
     new JoystickButton(operator, Constants.Control.kYButton)
       .whenPressed(() -> {
-        m_ChassisSubsystem.GyroReset();
-        m_ChassisSubsystem.resetEncoders();
+        m_ChassisSubsystem.gyroReset();
+        m_ChassisSubsystem.encoderReset();
       });
 
     // Controls for the climber
@@ -162,7 +165,6 @@ public class RobotContainer {
         break;
       case autoTwo:
         selected = (new AutoRouteTwo(m_ChassisSubsystem, m_ShooterSubsystem, m_ShooterFeederSubsystem, m_IntakeSubsystem));
-        System.out.println("AutoTwo");
         break;
       case autoThree:
         selected = (new AutoRouteThree(m_ChassisSubsystem, m_ShooterSubsystem, m_ShooterFeederSubsystem, m_IntakeSubsystem));

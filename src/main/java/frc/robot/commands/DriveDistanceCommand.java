@@ -51,7 +51,7 @@ public class DriveDistanceCommand extends CommandBase {
   @Override
   public void initialize() {
     startDistance = m_chassisSubsystem.getDistance();
-    startYaw = m_chassisSubsystem.getGyroYaw();
+    startYaw = m_chassisSubsystem.gyroYaw();
     finished = false;
     hitEnd = false;
   }
@@ -59,7 +59,7 @@ public class DriveDistanceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Yaw difference", startYaw - m_chassisSubsystem.getGyroYaw());
+    SmartDashboard.putNumber("Yaw difference", startYaw - m_chassisSubsystem.gyroYaw());
     /*
     double thresholdDistance = 0;
     if (m_chassisSubsystem.getDistance() - startDistance < m_distance - thresholdDistance){
@@ -75,8 +75,9 @@ public class DriveDistanceCommand extends CommandBase {
       finished = true;
     }
     */
+    
     if (Math.abs(m_chassisSubsystem.getDistance() - startDistance) < Math.abs(m_distance)) {
-      currentYaw = m_chassisSubsystem.getGyroYaw();
+      currentYaw = m_chassisSubsystem.gyroYaw();
       
       newYaw = -(startYaw - currentYaw) / 12;
       SmartDashboard.putNumber("Difference", newYaw);

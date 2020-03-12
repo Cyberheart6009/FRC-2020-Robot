@@ -16,10 +16,10 @@ import frc.robot.subsystems.ChassisSubsystem;
 /**
  * A command that will turn the robot to the specified angle.
  */
-public class PIDTurn extends PIDCommand {
+public class PIDCalibrate extends PIDCommand {
   static final double minimumOut = 0.7;
 
-  public PIDTurn(double targetAngleDegrees, ChassisSubsystem chassis) {
+  public PIDCalibrate(double targetAngleDegrees, ChassisSubsystem chassis) {
     super(
       new PIDController(Constants.PIDTurn.kTurnP, Constants.PIDTurn.kTurnI, Constants.PIDTurn.kTurnD),
       // Close loop on heading
@@ -44,6 +44,19 @@ public class PIDTurn extends PIDCommand {
     // setpoint before it is considered as having reached the reference
     getController()
         .setTolerance(Constants.PIDTurn.kTurnToleranceDeg, Constants.PIDTurn.kTurnRateToleranceDegPerS);
+
+
+    SmartDashboard.putNumber("kTurnP", Constants.PIDTurn.kTurnP);
+    SmartDashboard.putNumber("kTurnI", Constants.PIDTurn.kTurnI);
+    SmartDashboard.putNumber("kTurnD", Constants.PIDTurn.kTurnD);
+  }
+  
+  @Override
+  public void initialize() {
+    getController().setP(SmartDashboard.getNumber("kTurnP", Constants.PIDTurn.kTurnP));
+    getController().setI(SmartDashboard.getNumber("kTurnI", Constants.PIDTurn.kTurnI));
+    getController().setD(SmartDashboard.getNumber("kTurnD", Constants.PIDTurn.kTurnD));
+    super.initialize();
   }
 
   @Override

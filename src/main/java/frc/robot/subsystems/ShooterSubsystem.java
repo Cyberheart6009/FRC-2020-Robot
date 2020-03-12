@@ -27,10 +27,12 @@ public class ShooterSubsystem extends SubsystemBase {
       shooterGroup = new SpeedControllerGroup(shooterOne, shooterTwo);
 
       shooterEncoder = new Encoder(Constants.EncoderPorts.kShooterEncoderA, Constants.EncoderPorts.kShooterEncoderB);
+
+      shooterEncoder.setDistancePerPulse(1/256);
   }
 
   public void set(double speed) {
-    shooterGroup.set(speed);
+    shooterGroup.set(speed * 0.9);
   }
 
   public double getSpeed() {
@@ -41,9 +43,10 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     rpm.monitor(shooterEncoder.get());
     SmartDashboard.putNumber("Shooter RPM", getRotationsPerMinute());
-    SmartDashboard.putNumber("Shooter Get", shooterEncoder.getRate());
+    SmartDashboard.putNumber("Shooter Get", shooterEncoder.get());
 
-    if (Math.abs(SmartDashboard.getNumber("ShooterTargetAngle", 0.0)) < 2) {
+    double targetAngle = SmartDashboard.getNumber("ShooterTargetAngle", 0.0);
+    if (Math.abs(targetAngle) < 2 && targetAngle != 0.0) {
       SmartDashboard.putBoolean("Should You Shoot?", true);
     } else {
       SmartDashboard.putBoolean("Should You Shoot?", false);

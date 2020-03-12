@@ -21,6 +21,6 @@ public class RPMMonitor {
     }
 
     public double getRotationsPerMinute() {
-        return rpms * 1000 * 60 / 256;
+        return rpms * 1000 * 60 / encoderDivisor;
     }
 }

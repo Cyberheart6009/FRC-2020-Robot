@@ -46,7 +46,7 @@ public class TurnInPlaceCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    targetAngle = m_chassisSubsystem.GetGyroAngle() + m_angleTarget;
+    targetAngle = m_chassisSubsystem.gyroAngle() + m_angleTarget;
     startGear = m_chassisSubsystem.gearState;
     m_chassisSubsystem.gearDown();
   }
@@ -54,7 +54,7 @@ public class TurnInPlaceCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_chassisSubsystem.GetGyroAngle() > targetAngle) {
+    if (m_chassisSubsystem.gyroAngle() > targetAngle) {
       m_chassisSubsystem.drive(0, m_speed);
     } else {
       m_chassisSubsystem.drive(0, -m_speed);
@@ -66,7 +66,7 @@ public class TurnInPlaceCommand extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     System.out.println("ended");
-    m_chassisSubsystem.setGear(startGear);
+    m_chassisSubsystem.gearSet(startGear);
   }
 
 
@@ -74,7 +74,7 @@ public class TurnInPlaceCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_chassisSubsystem.GetGyroAngle() > targetAngle - threshold && m_chassisSubsystem.GetGyroAngle() < targetAngle + threshold) {
+    if (m_chassisSubsystem.gyroAngle() > targetAngle - threshold && m_chassisSubsystem.gyroAngle() < targetAngle + threshold) {
       return true;
     } else {
       return false;
