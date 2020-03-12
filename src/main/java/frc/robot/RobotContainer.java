@@ -22,6 +22,7 @@ import frc.robot.subsystems.ShooterFeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
@@ -97,7 +98,8 @@ public class RobotContainer {
     }, m_ClimberSubsystem));
 
     // Configure the button bindings
-    configureButtonBindings();
+    //configureButtonBindings();
+    testButtonBindings();
   }
 
   /**
@@ -106,6 +108,30 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
+
+    private void testButtonBindings(){
+      System.out.println("Ball Angle is m-");
+      System.out.println(-SmartDashboard.getNumber("BallAngle", 0.0));
+      new JoystickButton(driver, Constants.Control.kRBumper).whenPressed(new InstantCommand(
+        ()-> new TurnInPlaceCommand(m_ChassisSubsystem, 0.7, -SmartDashboard.getNumber("BallAngle", 0.0))));
+      
+
+        //new TurnInPlaceCommand(m_ChassisSubsystem, 0.7, -SmartDashboard.getNumber("BallAngle", 0.0))
+        //new ParallelCommandGroup(new DriveDistanceCommand())
+
+
+      //new TurnInPlaceCommand(m_ChassisSubsystem, 0.8, 20)
+    
+      
+    
+    new JoystickButton(driver, Constants.Control.kLBumper)
+      .whenPressed(new InstantCommand(() -> m_ChassisSubsystem.changeGear(), m_ChassisSubsystem));
+
+
+
+    }
+
+
   private void configureButtonBindings() {
     // Driver Manual Override
     new JoystickButton(driver, Constants.Control.kXButton)
